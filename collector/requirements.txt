@@ -1,0 +1,3 @@
+wget
+pandas
+psycopg2-binary
