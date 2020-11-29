@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Insights</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <script type="text/javascript" src="data.js"></script>
+    <script type="text/javascript" src="msg.js"></script>
+    <script>
+        var arr = [labels, data]
+
+        console.log(arr)
+    </script>
+
+</head>
+
+<body>
+    <h1>Movies</h1>
+    <input id="my" type="button" value="Show Chart" onclick="clicked(arr)" />
+    <div id="container" style="width: 50%;">
+        <canvas id="myChart"></canvas>
+    </div>
+
+</body>
+
+</html>
