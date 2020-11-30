@@ -6,6 +6,7 @@ var fs = require('fs')
 app.use(express.static(path.join(__dirname, 'js')));
 app.get('/', function (req, res) {
     console.log("it worked")
+    execute()
     res.sendFile(path.join(__dirname + '/index.html'));
 });
 app.listen(8080);
@@ -34,10 +35,10 @@ async function execute() {
     try {
         await client.connect()
         console.log("Connected successfully")
-        tconst2result = await client.query("select id from movie_table")
-        idresult = await client.query("select tconst2 from movie_table")
-        label = toRows(idresult.rows, tconst2result.rowCount, true)
-        bar_data = toRows(tconst2result.rows, tconst2result.rowCount, true)
+        tconst2result = await client.query("select primarytitle, averagerating from cleaned_movie_rating_table order by averagerating desc limit 5")
+        // idresult = await client.query("select tconst2 from movie_table")
+        // label = toRows(idresult.rows, tconst2result.rowCount, true)
+        bar_data = toRows(tconst2result.rows, tconst2result.rowCount)
         toJS([label, bar_data])
         await client.end()
         console.log("Client disconnected")
@@ -53,17 +54,24 @@ async function execute() {
 
 
 // returns am array of integers
-function toRows(data, rowCount, toInt) {
-    var arr = new Array()
+function toRows(data, rowCount) {
+    console.log("data")
+    console.log(Object.values(data[0])[0])
+    var arr1 = new Array()
     for (let i = 0; i < rowCount; i++) {
-        if (toInt) {
-            arr.push(parseInt(Object.values(data[i])))
-        } else {
-            arr.push(Object.values(data[i]))
-        }
+        arr1.push(Object.values(data[i])[0])
     }
-    arr = [].concat.apply([], arr)
-    return arr
+    arr1 = [].concat.apply([], arr1)
+
+    var arr2 = new Array()
+    for (let i = 0; i < rowCount; i++) {
+        arr2.push(parseFloat(Object.values(data[i])[1]))
+    }
+    arr2 = [].concat.apply([], arr2)
+    console.log(arr1)
+    console.log(arr2)
+    return [arr1, arr2]
+
 }
 
 
@@ -79,7 +87,8 @@ function toRows(data, rowCount, toInt) {
 // }
 
 function toJS(data) {
-    var dataa = "var labels = [" + data[0] + "], data = [" + data[1] + "]"
+    console.log()
+    var dataa = "var labels = [" + "\"" + data[1][0].join("\",\"") + "\"" + "], data = [" + data[1][1] + "]"
 
     fs.writeFile(__dirname + "/js/msg.js", dataa, function (err) {
         if (err) {

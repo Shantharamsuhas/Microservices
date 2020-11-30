@@ -4,25 +4,13 @@ function clicked(recieved_data) {
     var myChart = new Chart(ctx, {
         type: 'bar',
         data: {
-            labels: recieved_data[1],
+            labels: recieved_data[0],
             datasets: [{
                 label: '# of Votes',
-                data: recieved_data[0],
-                backgroundColor: [
-                    'rgba(54, 162, 235, 0.2)',
-                    'rgba(255, 206, 86, 0.2)',
-                    'rgba(75, 192, 192, 0.2)',
-                    'rgba(153, 102, 255, 0.2)',
-                    'rgba(255, 159, 64, 0.2)'
-                ],
-                borderColor: [
-                    'rgba(54, 162, 235, 1)',
-                    'rgba(255, 206, 86, 1)',
-                    'rgba(75, 192, 192, 1)',
-                    'rgba(153, 102, 255, 1)',
-                    'rgba(255, 159, 64, 1)'
-                ],
-                borderWidth: 2
+                data: recieved_data[1],
+                backgroundColor: colors(recieved_data[0].length, 0.2),
+                borderColor: colors(recieved_data[0].length, 0.7),
+                borderWidth: 1
             }]
         },
         options: {
@@ -51,3 +39,22 @@ function clicked(recieved_data) {
     });
 
 }
+
+function colors(num, a) {
+    var COLORS = [];
+    while (COLORS.length < num) {
+        COLORS.push(`rgba(${rand(0, 255)}, ${rand(0, 255)}, ${rand(0, 255)}, ${a})`);
+    }
+    return COLORS
+}
+// random number generator
+function rand(frm, to) {
+    return ~~(Math.random() * (to - frm)) + frm;
+}
+
+function random_rgba() {
+    var o = Math.round, r = Math.random, s = 255;
+    return 'rgba(' + o(r() * s) + ',' + o(r() * s) + ',' + o(r() * s) + ',' + r().toFixed(1) + ')';
+}
+
+var color = random_rgba();
