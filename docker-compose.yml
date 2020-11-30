@@ -27,6 +27,15 @@ services:
     networks:
       - neural
 
+  visualiser:
+    build: ./visualiser
+    depends_on:
+      - database
+    networks:
+      - neural
+    ports:
+      - "8080:8080"
+
 volumes:
   database-data: # named volumes can be managed easier using docker-compose
 
