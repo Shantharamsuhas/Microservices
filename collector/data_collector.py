@@ -34,7 +34,7 @@ print(rating_dataset.shape)
 print(movie_dataset.shape)
 
 conn = psycopg2.connect(database="dummy", user="admin",
-                        password="admin", host="localhost", port="5432")
+                        password="admin", host="database", port="5432")
 cur = conn.cursor()
 # creating table for ratings
 rating_table_query = '''CREATE TABLE IF NOT EXISTS rating_table
