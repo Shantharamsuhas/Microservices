@@ -3,7 +3,7 @@ import numpy as np
 import psycopg2
 
 conn = psycopg2.connect(database="dummy", user="admin",
-                        password="admin", host="localhost", port="5432")
+                        password="admin", host="database", port="5432")
 cur = conn.cursor()
 
 cur.execute("select m.primarytitle, m.titletype, r.votes, r.averagerating from movie_table m, rating_table r where r.tconst = m.tconst;")
