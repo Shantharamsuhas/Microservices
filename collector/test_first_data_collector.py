@@ -32,7 +32,7 @@ def test_rating_table_exists():
 # Test if rating table has data
 def test_data_rating_table():
     connection = psycopg2.connect(database="dummy", user="admin",
-                                  password="admin", host="localhost", port="5432")
+                                  password="admin", host="database", port="5432")
     cursor = connection.cursor()
     cursor.execute("""DELETE FROM rating_table""")
     cursor.execute("""SELECT * FROM rating_table LIMIT 4""")
@@ -43,7 +43,7 @@ def test_data_rating_table():
 # Test if movie table is created
 def test_movie_table_exists():
     connection = psycopg2.connect(database="dummy", user="admin",
-                                  password="admin", host="localhost", port="5432")
+                                  password="admin", host="database", port="5432")
     cursor = connection.cursor()
     cursor.execute("""DROP TABLE IF EXISTS movie_table""")
     cursor.execute("""SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'movie_table'""")
@@ -55,7 +55,7 @@ def test_movie_table_exists():
 # Test if move table exists
 def test_data_movie_table():
     connection = psycopg2.connect(database="dummy", user="admin",
-                                  password="admin", host="localhost", port="5432")
+                                  password="admin", host="database", port="5432")
     cursor = connection.cursor()
     cursor.execute("""DELETE FROM movie_table""")
     cursor.execute("""SELECT * FROM movie_table LIMIT 4""")
