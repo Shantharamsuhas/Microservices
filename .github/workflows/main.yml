@@ -24,6 +24,7 @@ jobs:
       # Runs a single command using the runners shell
       - name: Collector Test
         run: |
+          sudo apt-get install python3-setuptools
           pip3 install -r collector/requirements.txt
           python3 collector/test_first_data_collector.py
 
