@@ -26,8 +26,8 @@ jobs:
         run: |
           sudo apt-get install python3-setuptools
           pip3 install -r collector/requirements.txt
-          python3 collector/test_first_data_collector.py
+          python3 collector/test_data_collector.py
 
       # Runs a set of commands using the runners shell
       - name: Cleaner Test
-        run: echo Cleaner is running
+        run: python3 cleaner/test_data_cleaner.py
