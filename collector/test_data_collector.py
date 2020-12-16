@@ -1,5 +1,5 @@
 import pytest
-from collector.data_collector import rating_download_data, movies_download_data, database_connection, \
+from .collector.data_collector import rating_download_data, movies_download_data, database_connection, \
     create_rating_table, \
     load_rating_table, create_movie_table, load_movie_table
 
