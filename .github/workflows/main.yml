@@ -22,13 +22,15 @@ jobs:
       - uses: actions/checkout@main
 
       # Runs a single command using the runners shell
-      - name: Collector Test
-        run: |
-          export PYTHONPATH=.
-          sudo apt-get install python3-setuptools
-          pip3 install -r collector/requirements.txt
-          python3 collector/test_data_collector.py
+#       - name: Collector Test
+#         run: |
+#           export PYTHONPATH=.
+#           sudo apt-get install python3-setuptools
+#           pip3 install -r collector/requirements.txt
+#           python3 collector/test_data_collector.py
 
-      # Runs a set of commands using the runners shell
-      - name: Cleaner Test
-        run: python3 cleaner/test_data_cleaner.py
+#       # Runs a set of commands using the runners shell
+#       - name: Cleaner Test
+#         run: python3 cleaner/test_data_cleaner.py
+      - name: docker compose
+        run: docker-compose up --build
