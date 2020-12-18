@@ -32,5 +32,5 @@ jobs:
 #       # Runs a set of commands using the runners shell
 #       - name: Cleaner Test
 #         run: python3 cleaner/test_data_cleaner.py
-      - name: docker compose
-        run: docker-compose up --build
+      - name: Test Python script
+        run: python3 test.py
