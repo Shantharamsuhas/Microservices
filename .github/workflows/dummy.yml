@@ -37,7 +37,7 @@ jobs:
         uses: docker/login-action@v1 
         with:
          username: ${{ secrets.apoorvabc}}
-         password: ${{ secrets.8c731c44-410e-4d7b-b25e-cd66bcd1df53}}
+         password: ${{ secrets. 8c731c44-410e-4d7b-b25e-cd66bcd1df53}}
       
 #       - name: Build the docker-compose stack
 #         run: docker-compose up -d
