@@ -36,19 +36,14 @@ jobs:
       - name: Login to DockerHub
         uses: docker/login-action@v1 
         with:
-         username: ${{ secrets.apoorvabc }}
-         password: ${{ secrets.8c731c44-410e-4d7b-b25e-cd66bcd1df53 }}
+         username: ${{ secrets.apoorvabc}}
+         password: ${{ secrets.8c731c44-410e-4d7b-b25e-cd66bcd1df53}}
       
-      - name: Build the docker-compose stack
-        run: docker-compose up -d
+#       - name: Build the docker-compose stack
+#         run: docker-compose up -d
         
-#       - name: Sleep
-#         uses: jakejarvis/wait-action@master
-#         with:
-#         time: '60s'
-
-      - name: Check running containers
-        run: docker ps
+#       - name: Check running containers
+#         run: docker ps
         
 #       - name: Build and push
 
