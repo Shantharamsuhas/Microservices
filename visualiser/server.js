@@ -3,16 +3,18 @@ var app = express();
 var path = require('path');
 var fs = require('fs')
 
-app.use(express.static(path.join(__dirname, 'js')));
-app.get('/', function (req, res) {
-    console.log("it worked")
-    execute()
-    res.sendFile(path.join(__dirname + '/index.html'));
-});
-app.listen(8080);
 
 
 
+function openPort(app) {
+    app.use(express.static(path.join(__dirname, 'js')));
+    app.get('/', function (req, res) {
+        console.log("it worked")
+        execute()
+        res.sendFile(path.join(__dirname + '/index.html'));
+    });
+    app.listen(8080);
+}
 const { Client } = require('pg')
 const client = new Client({
     user: "admin",
@@ -99,3 +101,5 @@ function toJS(data) {
     })
 
 }
+
+module.exports = toRows;
