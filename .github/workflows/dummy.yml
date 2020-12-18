@@ -33,6 +33,12 @@ jobs:
       - name: Python dummy
         run: python3 test.py
         
+      - name: Login to DockerHub
+        uses: docker/login-action@v1 
+        with:
+         username: ${{ secrets.apoorvabc }}
+         password: ${{ secrets.8c731c44-410e-4d7b-b25e-cd66bcd1df53 }}
+      
       - name: Build the docker-compose stack
         run: docker-compose up -d
         
@@ -43,4 +49,26 @@ jobs:
 
       - name: Check running containers
         run: docker ps
+        
+#       - name: Build and push
+
+#         id: docker_build
+
+#         uses: docker/build-push-action@v2
+
+#         with:
+
+#           context: ./
+
+#           file: ./Dockerfile
+
+#           push: true
+
+#           tags: bengotch/simplewhale:latest
+
+#       -
+
+#         name: Image digest
+
+#         run: echo ${{ steps.docker_build.outputs.digest }}
     
