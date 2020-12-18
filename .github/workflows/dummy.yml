@@ -32,38 +32,16 @@ jobs:
       # Runs a set of commands using the runners shell
       - name: Python dummy
         run: python3 test.py
+      
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+      
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v1
         
       - name: Login to DockerHub
         uses: docker/login-action@v1 
         with:
          username: ${{ secrets.apoorvabc}}
-         password: ${{ secrets.Apoorva_1995}}
+         password: ${{ secrets.(8c731c44-410e-4d7b-b25e-cd66bcd1df53)}}
       
-#       - name: Build the docker-compose stack
-#         run: docker-compose up -d
-        
-#       - name: Check running containers
-#         run: docker ps
-        
-#       - name: Build and push
-
-#         id: docker_build
-
-#         uses: docker/build-push-action@v2
-
-#         with:
-
-#           context: ./
-
-#           file: ./Dockerfile
-
-#           push: true
-
-#           tags: bengotch/simplewhale:latest
-
-#       -
-
-#         name: Image digest
-
-#         run: echo ${{ steps.docker_build.outputs.digest }}
-    
