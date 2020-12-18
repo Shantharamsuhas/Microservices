@@ -21,7 +21,7 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         pip install flake8 pytest
-        if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
+        pip3 install -r collector/requirements.txt
     - name: Test with pytest
       run: |
-        pytest test_first_data_collector.py
+        python3 collector/test_data_collector.py
