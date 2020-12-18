@@ -5,8 +5,12 @@ import psycopg2
 
 # Establish connection with PostgreSQL SQL
 def database_connection():
+<<<<<<< HEAD
     conn = psycopg2.connect(database="dummy", user="admin",
                             password="admin", host="localhost", port="5432")
+=======
+    conn = psycopg2.connect(database="dummy", user="admin", password="admin", host="database", port="5432")
+>>>>>>> 3c5b6b86fafb6709d99754f31726a6ad0dd85c42
     return conn
 
 
@@ -69,7 +73,10 @@ def load_processed_movie_rating_table():
         has_data = cursor.fetchall()
         cursor.close()
         return has_data
+<<<<<<< HEAD
 
 
 create_processed_movie_rating_table()
 load_processed_movie_rating_table()
+=======
+>>>>>>> 3c5b6b86fafb6709d99754f31726a6ad0dd85c42
