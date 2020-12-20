@@ -25,6 +25,7 @@ jobs:
       - name: Installing dependencies
         run: |
           pip3 install setuptools
+          sudo apt-get -y python-pytest
           pip3 install -r collector/requirements.txt
           npm -v
           npm install jest
