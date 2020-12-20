@@ -32,7 +32,7 @@ jobs:
           
       
       - name: Testing collector
-        run: pytest collector/test_data_collector.py::test_rating_data_download
+        run: python3 -m pytest collector/test_data_collector.py::test_rating_data_download
         
       - name: Testing visualiser
         run: npm run test
