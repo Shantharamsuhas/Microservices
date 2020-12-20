@@ -3,7 +3,6 @@ import wget
 import pandas as pd
 import os
 import psycopg2
-<<<<<<< HEAD
 import flask
 import multiprocessing
 
@@ -13,8 +12,6 @@ app = flask.Flask('__name__')
 def API(Conf):
     print('In API selction')
     app.run(host='0.0.0.0', port=4321)
-=======
->>>>>>> 3c5b6b86fafb6709d99754f31726a6ad0dd85c42
 
 
 # Download rating data from IMDb website
@@ -25,15 +22,9 @@ def rating_download_data(url):
     print("Download ratings data finished")
     with gzip.open(rating_data) as f:
         rating_dataset = pd.read_csv(f, sep="\t")
-<<<<<<< HEAD
         # if os.path.exists(rating_data):
         #     # os.remove(rating_data)
     return rating_dataset
-=======
-        if os.path.exists(rating_data):
-            os.remove(rating_data)
-            return rating_dataset
->>>>>>> 3c5b6b86fafb6709d99754f31726a6ad0dd85c42
 
 
 # Download movies data from IMDb website
@@ -44,25 +35,15 @@ def movies_download_data(url):
     print("Download movies data finished")
     with gzip.open(movie_data) as f:
         movie_dataset = pd.read_csv(f, sep="\t")
-<<<<<<< HEAD
         # if os.path.exists(movie_data):
         #     os.remove(movie_data)
     return movie_dataset
-=======
-        if os.path.exists(movie_data):
-            os.remove(movie_data)
-            return movie_dataset
->>>>>>> 3c5b6b86fafb6709d99754f31726a6ad0dd85c42
 
 
 # Connect to postgres sql database
 def database_connection():
-<<<<<<< HEAD
     conn = psycopg2.connect(database="dummy", user="admin",
                             password="admin", host="localhost", port="5432")
-=======
-    conn = psycopg2.connect(database="dummy", user="admin", password="admin", host="localhost", port="5432")
->>>>>>> 3c5b6b86fafb6709d99754f31726a6ad0dd85c42
     return conn
 
 
@@ -76,12 +57,8 @@ def create_rating_table():
              votes         TEXT    NOT NULL
              );""")
     conn.commit()
-<<<<<<< HEAD
     cursor.execute(
         """SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'rating_table'""")
-=======
-    cursor.execute("""SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'rating_table'""")
->>>>>>> 3c5b6b86fafb6709d99754f31726a6ad0dd85c42
     is_table = cursor.fetchall()
     print("rating_table created successfully in PostgreSQL ")
     conn.close()
@@ -92,12 +69,8 @@ def create_rating_table():
 def load_rating_table():
     conn = database_connection()
     cur = conn.cursor()
-<<<<<<< HEAD
     rating_dataset = rating_download_data(
         "https://datasets.imdbws.com/title.ratings.tsv.gz")
-=======
-    rating_dataset = rating_download_data("https://datasets.imdbws.com/title.ratings.tsv.gz")
->>>>>>> 3c5b6b86fafb6709d99754f31726a6ad0dd85c42
     for row in rating_dataset[:100].itertuples():
         tconst = int(row.tconst[2:])
         averageRating = row.averageRating
@@ -128,12 +101,8 @@ def create_movie_table():
           genres TEXT
           );""")
     conn.commit()
-<<<<<<< HEAD
     cursor.execute(
         """SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'movie_table'""")
-=======
-    cursor.execute("""SELECT TABLE_NAME FROM INFORMATION_SCHEMA.TABLES WHERE TABLE_NAME = 'movie_table'""")
->>>>>>> 3c5b6b86fafb6709d99754f31726a6ad0dd85c42
     is_table = cursor.fetchall()
     print("Movie table created successfully in PostgreSQL ")
     conn.close()
@@ -144,12 +113,8 @@ def create_movie_table():
 def load_movie_table():
     conn = database_connection()
     cur = conn.cursor()
-<<<<<<< HEAD
     movie_dataset = movies_download_data(
         "https://datasets.imdbws.com/title.basics.tsv.gz")
-=======
-    movie_dataset = movies_download_data("https://datasets.imdbws.com/title.basics.tsv.gz")
->>>>>>> 3c5b6b86fafb6709d99754f31726a6ad0dd85c42
     for row in movie_dataset[:100].itertuples():
         tconst = int(row.tconst[2:])
         title_type = row.titleType
@@ -171,7 +136,6 @@ def load_movie_table():
         has_data = cur.fetchall()
         conn.commit()
         return has_data
-<<<<<<< HEAD
 
 
 if __name__ == "__main__":
@@ -186,5 +150,3 @@ if __name__ == "__main__":
     p.terminate()
     p.join()
     print("Server Stopped")
-=======
->>>>>>> 3c5b6b86fafb6709d99754f31726a6ad0dd85c42
