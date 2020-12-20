@@ -8,6 +8,8 @@ on:
   # Triggers the workflow on push or pull request events but only for the main branch
   # Allows you to run this workflow manually from the Actions tab
   workflow_dispatch:
+  
+
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 jobs:
@@ -30,16 +32,18 @@ jobs:
           pip3 install -r collector/requirements.txt
           npm config set user 0
           npm config set unsafe-perm true
-          npm install jest
           
       
       - name: Testing collector
         run: python3 -m pytest collector/test_data_collector.py::test_rating_data_download
         
-      - name: Testing visualiser
+      
+    
+      - name: Testing visualiser    
         run: |
           cd visualiser
           npm install
+          npm install jest
           npm run build --if-present
           npm test
                  
