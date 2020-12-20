@@ -36,3 +36,7 @@ jobs:
       - name: running contaioners
         run: docker ps
         
+        
+      - name: running all contaioners
+        run: docker ps -a
+        
