@@ -27,7 +27,8 @@ jobs:
           pip3 install setuptools
           pip3 install pytest
           pip3 install -r collector/requirements.txt
-          npm -v
+          npm config set user 0
+          npm config set unsafe-perm true
           npm install jest
           
       
