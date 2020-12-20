@@ -22,21 +22,31 @@ jobs:
       - uses: actions/checkout@main
 
       # Runs a single command using the runners shell
-      - name: Run a one-line script
-        run: pip3 install setuptools
+      - name: Installing dependencies
+        run: |
+          pip3 install setuptools, pytest
+          npm -v
+          npm install jest
+          
+      
+      - name: Testing collector
+        run: pytest collector/test_data_collector.py::test_rating_data_download
+        
+      - name: Testing visualiser
+        run: npm run test
         
 
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
         run: docker-compose up -d
         
-      - name: wait 30s
-        run: sleep 30
+      - name: Wait 10s
+        run: sleep 10
         
-      - name: running contaioners
+      - name: Currently running contaioners
         run: docker ps
         
         
-      - name: running all contaioners
+      - name: History of all contaioners
         run: docker ps -a
         
