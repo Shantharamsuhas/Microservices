@@ -50,7 +50,8 @@ def test_data_movie_table():
     assert len(is_data) != 0, 'Test passed rating table has data'
 
 
-# test_rating_data_download()
+test_rating_data_download()
 
 if __name__ == '__main__':
-    pytest.main()
+    # pytest.main()
+    test_rating_data_download()

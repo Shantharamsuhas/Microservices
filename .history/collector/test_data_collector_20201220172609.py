@@ -7,7 +7,6 @@ from data_collector import rating_download_data, movies_download_data, database_
 
 # Test if data has been successfully downloaded from IMDb website
 def test_rating_data_download():
-    print("bla")
     rating_data = rating_download_data(
         "https://datasets.imdbws.com/title.ratings.tsv.gz")
     assert rating_data is not None, 'Test passed: Data successfully downloaded'
@@ -49,8 +48,6 @@ def test_data_movie_table():
     is_data = load_movie_table()
     assert len(is_data) != 0, 'Test passed rating table has data'
 
-
-# test_rating_data_download()
 
 if __name__ == '__main__':
     pytest.main()

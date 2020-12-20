@@ -53,4 +53,5 @@ def test_data_movie_table():
 # test_rating_data_download()
 
 if __name__ == '__main__':
-    pytest.main()
+    # pytest.main()
+    test_rating_data_download()
