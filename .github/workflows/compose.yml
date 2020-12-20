@@ -37,7 +37,7 @@ jobs:
       - name: Testing visualiser
         run: |
           cd visualiser
-          npm run test
+          sudo npm run test
         
 
       # Runs a set of commands using the runners shell
