@@ -35,12 +35,16 @@ jobs:
         run: python3 -m pytest collector/test_data_collector.py::test_rating_data_download
         
       - name: Testing visualiser
-        run: npm run test
+        run: |
+          cd visualiser
+          npm run test
         
 
       # Runs a set of commands using the runners shell
       - name: Run a multi-line script
-        run: docker-compose up -d
+        run: |
+          cd ..
+          docker-compose up -d
         
       - name: Wait 10s
         run: sleep 10
