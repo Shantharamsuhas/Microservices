@@ -1,7 +1,3 @@
 pandas
 psycopg2-binary
-<<<<<<< HEAD
 pytest
-=======
-pytest
->>>>>>> 3c5b6b86fafb6709d99754f31726a6ad0dd85c42
