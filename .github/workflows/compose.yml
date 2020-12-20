@@ -24,7 +24,8 @@ jobs:
       # Runs a single command using the runners shell
       - name: Installing dependencies
         run: |
-          pip3 install setuptools, pytest
+          pip3 install setuptools
+          pip3 install -r collector/requirements.txt
           npm -v
           npm install jest
           
