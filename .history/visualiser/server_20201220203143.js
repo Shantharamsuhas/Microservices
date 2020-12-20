@@ -32,8 +32,8 @@ var idresult
 var label
 var bar_data
 
-execute(app)
-async function execute(app) {
+execute()
+async function execute() {
     try {
         openPort(app)
         await client.connect()
