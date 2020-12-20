@@ -43,7 +43,7 @@ def movies_download_data(url):
 # Connect to postgres sql database
 def database_connection():
     conn = psycopg2.connect(database="dummy", user="admin",
-                            password="admin", host="localhost", port="5432")
+                            password="admin", host="database", port="5432")
     return conn
 
 
