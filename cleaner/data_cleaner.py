@@ -65,21 +65,12 @@ def load_processed_movie_rating_table():
             INSERT INTO cleaned_movie_rating_table
             VALUES (%s, %s, %s, %s, %s);
             """, (index, primarytitle, titletype, votes, averagerating))
-<<<<<<< HEAD
     conn.commit()
     print("Inserting done")
     cursor.execute("""SELECT * FROM movie_table""")
     has_data = cursor.fetchall()
     cursor.close()
     return has_data
-=======
-        conn.commit()
-        print("Inserting done")
-        cursor.execute("""SELECT * FROM movie_table""")
-        has_data = cursor.fetchall()
-        cursor.close()
-        return has_data
->>>>>>> f6e0a32224038c5a1b59d59cbae8f272f471b553
 
 
 create_processed_movie_rating_table()

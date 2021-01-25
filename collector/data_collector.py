@@ -7,13 +7,9 @@ import os
 import psycopg2
 import flask
 import multiprocessing
-<<<<<<< HEAD
 from collections import Counter
 from datetime import datetime
 import zipfile
-=======
-
->>>>>>> f6e0a32224038c5a1b59d59cbae8f272f471b553
 app = flask.Flask('__name__')
 
 
@@ -30,7 +26,6 @@ def rating_download_data(url):
     print("Download finished")
     with gzip.open(rating_data) as f:
         rating_dataset = pd.read_csv(f, sep="\t")
-<<<<<<< HEAD
     if os.path.exists(rating_data):
         os.remove(rating_data)
     return rating_dataset
@@ -47,24 +42,6 @@ def rating_download_data(url):
 #         # if os.path.exists(movie_data):
 #         #     os.remove(movie_data)
 #     return movie_dataset
-=======
-        # if os.path.exists(rating_data):
-        #     # os.remove(rating_data)
-    return rating_dataset
-
-
-# Download movies data from IMDb website
-def movies_download_data(url):
-    movie_url = url
-    print("Downloading data for movie names")
-    movie_data = wget.download(movie_url)
-    print("Download movies data finished")
-    with gzip.open(movie_data) as f:
-        movie_dataset = pd.read_csv(f, sep="\t")
-        # if os.path.exists(movie_data):
-        #     os.remove(movie_data)
-    return movie_dataset
->>>>>>> f6e0a32224038c5a1b59d59cbae8f272f471b553
 
 
 # Connect to postgres sql database
@@ -96,17 +73,11 @@ def create_rating_table():
 def load_rating_table(rating_dataset):
     conn = database_connection()
     cur = conn.cursor()
-<<<<<<< HEAD
     # rating_dataset = rating_download_data(
     #     "https://datasets.imdbws.com/title.ratings.tsv.gz")
     cur.execute("""DELETE FROM rating_table""")
     t1 = datetime.now()
     for row in rating_dataset[:5000].itertuples():
-=======
-    rating_dataset = rating_download_data(
-        "https://datasets.imdbws.com/title.ratings.tsv.gz")
-    for row in rating_dataset[:100].itertuples():
->>>>>>> f6e0a32224038c5a1b59d59cbae8f272f471b553
         tconst = int(row.tconst[2:])
         averageRating = row.averageRating
         numVotes = row.numVotes
@@ -217,7 +188,6 @@ def create_genre_freq_table(genre_frequency):
 def load_movie_table():
     conn = database_connection()
     cur = conn.cursor()
-<<<<<<< HEAD
     rating_dataset = rating_download_data(
         "https://datasets.imdbws.com/title.ratings.tsv.gz")
     movie_dataset = rating_download_data(
@@ -335,12 +305,6 @@ def load_movie_table():
     tt1 = datetime.now()
     for row in df1.itertuples():
         tconst = row.tconst
-=======
-    movie_dataset = movies_download_data(
-        "https://datasets.imdbws.com/title.basics.tsv.gz")
-    for row in movie_dataset[:100].itertuples():
-        tconst = int(row.tconst[2:])
->>>>>>> f6e0a32224038c5a1b59d59cbae8f272f471b553
         title_type = row.titleType
         primary_title = row.primaryTitle
         # original_title = row.originalTitle
@@ -354,7 +318,6 @@ def load_movie_table():
         #       original_title, start_year, end_year, genres)
         cur.execute("""
             INSERT INTO movie_table
-<<<<<<< HEAD
             VALUES (%s, %s, %s, %s, %s, %s);""",
                     (tconst, title_type, primary_title, start_year, average_rating, num_votes))
     tt2 = datetime.now()
@@ -370,15 +333,6 @@ def load_movie_table():
     create_year_freq_table(year_frequency)
     create_genre_freq_table(genre_frequency)
     return has_data
-=======
-            VALUES (%s, %s, %s, %s, %s, %s, %s);""",
-                    (tconst, title_type, primary_title, original_title, start_year, end_year, genres))
-        print("Inserting done")
-        cur.execute("""SELECT * FROM movie_table""")
-        has_data = cur.fetchall()
-        conn.commit()
-        return has_data
->>>>>>> f6e0a32224038c5a1b59d59cbae8f272f471b553
 
 
 if __name__ == "__main__":
@@ -387,11 +341,7 @@ if __name__ == "__main__":
     p.start()
     print("Server Started")
     create_rating_table()
-<<<<<<< HEAD
     # load_rating_table()
-=======
-    load_rating_table()
->>>>>>> f6e0a32224038c5a1b59d59cbae8f272f471b553
     create_movie_table()
     load_movie_table()
     p.terminate()

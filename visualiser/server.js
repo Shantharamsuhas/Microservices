@@ -110,8 +110,4 @@ function toJS(data) {
     })
 
 }
-<<<<<<< HEAD
-=======
-
->>>>>>> f6e0a32224038c5a1b59d59cbae8f272f471b553
 module.exports = toRows;
