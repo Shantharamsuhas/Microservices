@@ -1,0 +1,24 @@
+{
+  "name": "bigdata_microservices",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "test": "jest -runInBand "
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/iamitaliya/bigdata_microservices.git"
+  },
+  "author": "Nikhilkumar Italiya",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/iamitaliya/bigdata_microservices/issues"
+  },
+  "homepage": "https://github.com/iamitaliya/bigdata_microservices#readme",
+  "description": "",
+  "dependencies": {
+    "express": "^4.17.1",
+    "fs": "0.0.1-security",
+    "pg": "^8.5.1"
+  }
+}

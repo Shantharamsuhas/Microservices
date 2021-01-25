@@ -27,29 +27,21 @@ const client = new Client({
 
 
 
-var top_movies
+var tconst2result
 var idresult
 var label
 var bar_data
 
-execute(app)
-async function execute(app) {
+execute()
+async function execute() {
     try {
-        openPort(app)
         await client.connect()
         console.log("Connected successfully")
-        top_movies = await client.query("select primarytitle, averagerating from movie_table order by averagerating desc limit 5")
-        bottom_movies = await client.query("select primarytitle, averagerating from movie_table order by averagerating limit 5")
-        by_year = await client.query("select * from year_table order by movies_made desc limit 5")
-        by_genre = await client.query("select * from genre_table order by movies_made desc limit 5")
+        tconst2result = await client.query("select primarytitle, averagerating from cleaned_movie_rating_table order by averagerating desc limit 5")
         // idresult = await client.query("select tconst2 from movie_table")
         // label = toRows(idresult.rows, tconst2result.rowCount, true)
-        top_data = toRows(top_movies.rows, top_movies.rowCount)
-        bottom_data = toRows(bottom_movies.rows, bottom_movies.rowCount)
-        year_data = toRows(by_year.rows, by_year.rowCount)
-        genre_data = toRows(by_genre.rows, by_genre.rowCount)
-
-        toJS([top_data, bottom_data, year_data, genre_data])
+        bar_data = toRows(tconst2result.rows, tconst2result.rowCount)
+        toJS([label, bar_data])
         await client.end()
         console.log("Client disconnected")
     }
@@ -97,9 +89,8 @@ function toRows(data, rowCount) {
 // }
 
 function toJS(data) {
-    console.log('arrived')
-    console.log(data)
-    var dataa = "var top_labels = [" + "\"" + data[0][0].join("\",\"") + "\"" + "], top_data = [" + data[0][1] + "], bottom_labels = [" + "\"" + data[1][0].join("\",\"") + "\"" + "], bottom_data = [" + data[1][1] + "], year_labels = [" + "\"" + data[2][0].join("\",\"") + "\"" + "], year_data = [" + data[2][1] + "], genre_labels = [" + "\"" + data[3][0].join("\",\"") + "\"" + "], genre_data = [" + data[3][1] + "]"
+    console.log()
+    var dataa = "var labels = [" + "\"" + data[1][0].join("\",\"") + "\"" + "], data = [" + data[1][1] + "]"
 
     fs.writeFile(__dirname + "/js/msg.js", dataa, function (err) {
         if (err) {
@@ -110,8 +101,5 @@ function toJS(data) {
     })
 
 }
-<<<<<<< HEAD
-=======
 
->>>>>>> f6e0a32224038c5a1b59d59cbae8f272f471b553
 module.exports = toRows;
