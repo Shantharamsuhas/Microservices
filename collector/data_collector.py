@@ -31,17 +31,17 @@ def rating_download_data(url):
     return rating_dataset
 
 
-# # Download movies data from IMDb website
-# def movies_download_data(url):
-#     movie_url = url
-#     print("Downloading data for movie names")
-#     movie_data = wget.download(movie_url)
-#     print("Download movies data finished")
-#     with gzip.open(movie_data) as f:
-#         movie_dataset = pd.read_csv(f, sep="\t")
-#         # if os.path.exists(movie_data):
-#         #     os.remove(movie_data)
-#     return movie_dataset
+# Download movies data from IMDb website
+def movies_download_data(url):
+    movie_url = url
+    print("Downloading data for movie names")
+    movie_data = wget.download(movie_url)
+    print("Download movies data finished")
+    with gzip.open(movie_data) as f:
+        movie_dataset = pd.read_csv(f, sep="\t")
+        # if os.path.exists(movie_data):
+        #     os.remove(movie_data)
+    return movie_dataset
 
 
 # Connect to postgres sql database
