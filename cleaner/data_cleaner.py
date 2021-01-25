@@ -5,7 +5,8 @@ import psycopg2
 
 # Establish connection with PostgreSQL SQL
 def database_connection():
-    conn = psycopg2.connect(database="dummy", user="admin", password="admin", host="database", port="5432")
+    conn = psycopg2.connect(database="dummy", user="admin",
+                            password="admin", host="database", port="5432")
     return conn
 
 
@@ -13,9 +14,11 @@ def database_connection():
 def data_to_clean():
     conn = database_connection()
     cursor = conn.cursor()
+    # cursor.execute(
+    #     "SELECT m.primarytitle, m.titletype, r.votes, r.averagerating FROM movie_table m, rating_table r where "
+    #     "r.tconst = m.tconst;")
     cursor.execute(
-        "SELECT m.primarytitle, m.titletype, r.votes, r.averagerating FROM movie_table m, rating_table r where "
-        "r.tconst = m.tconst;")
+        "SELECT primarytitle, titletype, numvotes, averagerating FROM movie_table")
     data2clean = cursor.fetchall()
     print(data2clean)
     data = pd.DataFrame(data2clean)
@@ -49,22 +52,26 @@ def load_processed_movie_rating_table():
     data = data_to_clean()
     conn = database_connection()
     cursor = conn.cursor()
+    cursor.execute("""DELETE FROM cleaned_movie_rating_table""")
     for row in data.itertuples():
         # print(row)
         index = row[0]
         primarytitle = row[1]
         titletype = row[2]
-        votes = row[3]
-        averagerating = row[4]
+        votes = row[4]
+        averagerating = row[3]
         print(index, primarytitle, titletype, votes, averagerating)
-        cursor.execute("""DELETE FROM cleaned_movie_rating_table""")
         cursor.execute("""
             INSERT INTO cleaned_movie_rating_table
             VALUES (%s, %s, %s, %s, %s);
             """, (index, primarytitle, titletype, votes, averagerating))
-        conn.commit()
-        print("Inserting done")
-        cursor.execute("""SELECT * FROM movie_table""")
-        has_data = cursor.fetchall()
-        cursor.close()
-        return has_data
+    conn.commit()
+    print("Inserting done")
+    cursor.execute("""SELECT * FROM movie_table""")
+    has_data = cursor.fetchall()
+    cursor.close()
+    return has_data
+
+
+create_processed_movie_rating_table()
+load_processed_movie_rating_table()

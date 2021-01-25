@@ -8,21 +8,305 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
     <script type="text/javascript" src="data.js"></script>
     <script type="text/javascript" src="msg.js"></script>
-    <script>
-        var arr = [labels, data]
-
-        console.log(arr)
-    </script>
 
 </head>
+<style>
+    #wrapper1 {
+        display: flex;
+    }
+
+    #container {
+        flex: 0.4;
+    }
+
+    #container2 {
+        flex: 0.4;
+    }
+
+    #wrapper2 {
+        display: flex;
+
+    }
+
+    #container3 {
+        flex: 0.4;
+        margin-right: 10px;
+    }
+
+    #container4 {
+        flex: 0.4;
+    }
+</style>
 
 <body>
-    <h1>Movies</h1>
+    <h1>Movies Overview</h1>
     <input id="my" type="button" value="Show Chart" onclick="clicked(arr)" />
-    <div id="container" style="width: 50%;">
-        <canvas id="myChart"></canvas>
+
+    <div id="wrapper1">
+
+        <div id="container" style="width: 40%;margin-left: 100px;">
+            <!-- <label for="cars">Choose a Year: </label>
+            <select name="cars" id="cars">
+                <option value="2000">2000</option>
+                <option value="2001">2001</option>
+                <option value="2002">2002</option>
+                <option value="2003">2003</option>
+            </select> -->
+            <canvas id="chart"></canvas>
+        </div>
+        <div id="container2" style="width: 40%;margin-left: 100px;">
+            <!-- <label for="cars">Choose a Year: </label>
+            <select name="cars" id="cars">
+                <option value="2000">2000</option>
+                <option value="2001">2001</option>
+                <option value="2002">2002</option>
+                <option value="2003">2003</option>
+            </select> -->
+            <canvas id="chart3"></canvas>
+        </div>
+    </div>
+    <br>
+    <br>
+    <br>
+    <br>
+    <div id="wrapper2">
+        <div id="container3" style="width: 40%;margin-left: 100px;">
+
+            <canvas id="chart4"></canvas>
+        </div>
+        <div id="container4" style="width: 40%;margin-left: 100px;">
+            <!-- <label for="cars">Choose a Year: </label>
+            <select name="cars" id="cars">
+                <option value="2000">2000</option>
+                <option value="2001">2001</option>
+                <option value="2002">2002</option>
+                <option value="2003">2003</option>
+            </select> -->
+            <canvas id="chart2"></canvas>
+        </div>
     </div>
 
 </body>
+
+<script>
+    var arr = [top_labels, top_data, bottom_labels, bottom_data, year_labels, year_data, genre_labels, genre_data]
+    // var ctx = document.getElementById("chart").getContext('2d');
+    // var myChart = new Chart(ctx, {
+    //     type: 'bar',
+    //     data: {
+    //         labels: recieved_data[0],
+    //         datasets: [{
+    //             label: '# of Votes',
+    //             data: recieved_data[1],
+    //             backgroundColor: colors(recieved_data[0].length, 0.2),
+    //             borderColor: colors(recieved_data[0].length, 0.7),
+    //             borderWidth: 1
+    //         }]
+    //     },
+    //     options: {
+    //         responsive: true,
+    //         title: {
+    //             display: true,
+    //             text: 'Top something'
+    //         },
+    //         scales: {
+    //             xAxes: [{
+    //                 display: true,
+    //                 scaleLabel: {
+    //                     display: true,
+    //                     labelString: 'Movie'
+    //                 }
+    //             }],
+    //             yAxes: [{
+    //                 display: true,
+    //                 scaleLabel: {
+    //                     display: true,
+    //                     labelString: 'Votes'
+    //                 }
+    //             }]
+    //         }
+    //     }
+    // });
+
+    // // dummy
+    // var myChart = new Chart(ctx, {
+    //     type: 'horizontalBar',
+    //     data: {
+    //         labels: ['The Godfather', 'The Shawshank Redemption', 'Schindler\'s List', 'Raging Bull', 'Casablanca'],
+    //         datasets: [{
+    //             label: '# of Votes',
+    //             data: [1612667, 2332783, 1209020, 320711, 520312],
+    //             backgroundColor: [
+    //                 'rgba(255, 99, 132, 0.2)',
+    //                 'rgba(54, 162, 235, 0.2)',
+    //                 'rgba(255, 206, 86, 0.2)',
+    //                 'rgba(75, 192, 192, 0.2)',
+    //                 'rgba(153, 102, 255, 0.2)',
+    //                 'rgba(255, 159, 64, 0.2)'
+    //             ],
+    //             borderColor: [
+    //                 'rgba(255, 99, 132, 1)',
+    //                 'rgba(54, 162, 235, 1)',
+    //                 'rgba(255, 206, 86, 1)',
+    //                 'rgba(75, 192, 192, 1)',
+    //                 'rgba(153, 102, 255, 1)',
+    //                 'rgba(255, 159, 64, 1)'
+    //             ],
+    //             borderWidth: 1
+    //         }]
+    //     },
+    //     options: {
+    //         responsive: true,
+    //         title: {
+    //             display: true,
+    //             text: 'Top 5 Movies'
+    //         },
+    //         scales: {
+    //             xAxes: [{
+    //                 stacked: true
+    //             }],
+    //             yAxes: [{
+    //                 stacked: true
+    //             }]
+
+    //         }
+    //     }
+    // });
+
+
+    // // dummy 2
+    // pie_data = {
+    //     datasets: [{
+    //         data: [10, 20, 30]
+    //     }],
+
+    //     // These labels appear in the legend and in the tooltips when hovering different arcs
+    //     labels: [
+    //         'Red',
+    //         'Yellow',
+    //         'Blue'
+    //     ]
+    // };
+    // var ctx2 = document.getElementById("chart2").getContext('2d');
+    // var myChart2 = new Chart(ctx2, {
+    //     type: 'line',
+    //     data: {
+    //         labels: ['Comedy', 'Thriller', 'Drama', 'Horror', 'Action'],
+    //         datasets: [{
+    //             label: 'Genres',
+    //             data: [12, 19, 40, 11, 18],
+    //             backgroundColor: [
+    //                 'rgba(255, 99, 132, 0.2)',
+    //                 'rgba(54, 162, 235, 0.2)',
+    //                 'rgba(255, 206, 86, 0.2)',
+    //                 'rgba(75, 192, 192, 0.2)',
+    //                 'rgba(153, 102, 255, 0.2)',
+    //                 'rgba(255, 159, 64, 0.2)'
+    //             ],
+    //             borderColor: [
+    //                 'rgba(255, 99, 132, 1)',
+    //                 'rgba(54, 162, 235, 1)',
+    //                 'rgba(255, 206, 86, 1)',
+    //                 'rgba(75, 192, 192, 1)',
+    //                 'rgba(153, 102, 255, 1)',
+    //                 'rgba(255, 159, 64, 1)'
+    //             ],
+    //             borderWidth: 1
+    //         }]
+    //     },
+    //     options: {
+    //         responsive: true,
+    //         title: {
+    //             display: true,
+    //             text: 'Movies made by genres'
+    //         },
+    //         scales: {
+    //             yAxes: [{
+    //                 ticks: {
+    //                     beginAtZero: true
+    //                 }
+    //             }]
+    //         }
+    //     }
+    // });
+
+    // // dummy 3
+    // var ctx3 = document.getElementById("chart3").getContext('2d');
+    // var myChart3 = new Chart(ctx3, {
+    //     type: 'line',
+    //     data: {
+    //         labels: ['2020', '2019', '2018', '2017', '2016', '2015'],
+    //         datasets: [{
+    //             label: '# of Movies',
+    //             data: [12, 19, 15, 11, 8, 5],
+    //             borderWidth: 1
+    //         }]
+    //     },
+    //     options: {
+    //         responsive: true,
+    //         title: {
+    //             display: true,
+    //             text: 'Movies made by year'
+    //         },
+    //         scales: {
+    //             yAxes: [{
+    //                 ticks: {
+    //                     beginAtZero: true
+    //                 }
+    //             }]
+    //         }
+    //     }
+    // });
+
+
+    // // dummy 2
+    // var ctx4 = document.getElementById("chart4").getContext('2d');
+    // var myChart4 = new Chart(ctx4, {
+    //     type: 'bar',
+    //     data: {
+    //         labels: ['Movie1', 'Movie2', 'Movie3', 'Movie4', 'Movie5'],
+    //         datasets: [{
+    //             label: '# of Votes',
+    //             data: [12, 19, 3, 5, 2, 3],
+    //             backgroundColor: [
+    //                 'rgba(255, 99, 132, 0.2)',
+    //                 'rgba(54, 162, 235, 0.2)',
+    //                 'rgba(255, 206, 86, 0.2)',
+    //                 'rgba(75, 192, 192, 0.2)',
+    //                 'rgba(153, 102, 255, 0.2)',
+    //                 'rgba(255, 159, 64, 0.2)'
+    //             ],
+    //             borderColor: [
+    //                 'rgba(255, 99, 132, 1)',
+    //                 'rgba(54, 162, 235, 1)',
+    //                 'rgba(255, 206, 86, 1)',
+    //                 'rgba(75, 192, 192, 1)',
+    //                 'rgba(153, 102, 255, 1)',
+    //                 'rgba(255, 159, 64, 1)'
+    //             ],
+    //             borderWidth: 1
+    //         }]
+    //     },
+    //     options: {
+    //         responsive: true,
+    //         title: {
+    //             display: true,
+    //             text: 'Worst 5 Movies'
+    //         },
+    //         scales: {
+    //             yAxes: [{
+    //                 ticks: {
+    //                     beginAtZero: true
+    //                 }
+    //             }]
+    //         }
+    //     }
+    // });
+
+
+
+    console.log(arr)
+</script>
+
 
 </html>

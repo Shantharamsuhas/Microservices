@@ -1,7 +1,5 @@
 import pytest
-from .collector.data_collector import rating_download_data, movies_download_data, database_connection, \
-    create_rating_table, \
-    load_rating_table, create_movie_table, load_movie_table
+from data_collector import rating_download_data, movies_download_data, database_connection, create_rating_table, load_rating_table, create_movie_table, load_movie_table
 
 ''' TEST DRIVEN DEVELOPMENT 
     Unit test scripts for data_Collector.py '''
@@ -9,13 +7,16 @@ from .collector.data_collector import rating_download_data, movies_download_data
 
 # Test if data has been successfully downloaded from IMDb website
 def test_rating_data_download():
-    rating_data = rating_download_data("https://datasets.imdbws.com/title.ratings.tsv.gz")
+    print("bla")
+    rating_data = rating_download_data(
+        "https://datasets.imdbws.com/title.ratings.tsv.gz")
     assert rating_data is not None, 'Test passed: Data successfully downloaded'
 
 
 # Test if data has been successfully downloaded from IMDb website
 def test_movies_data_download():
-    movie_data = movies_download_data("https://datasets.imdbws.com/title.basics.tsv.gz")
+    movie_data = movies_download_data(
+        "https://datasets.imdbws.com/title.basics.tsv.gz")
     assert movie_data is not None, 'Test passed: Data successfully downloaded'
 
 
@@ -48,6 +49,8 @@ def test_data_movie_table():
     is_data = load_movie_table()
     assert len(is_data) != 0, 'Test passed rating table has data'
 
+
+# test_rating_data_download()
 
 if __name__ == '__main__':
     pytest.main()

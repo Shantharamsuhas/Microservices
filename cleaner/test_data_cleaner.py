@@ -1,6 +1,5 @@
 import pytest
-from cleaner.data_cleaner import database_connection, create_processed_movie_rating_table, \
-    load_processed_movie_rating_table
+from data_cleaner import database_connection, create_processed_movie_rating_table, load_processed_movie_rating_table
 
 
 # Test if db connected
