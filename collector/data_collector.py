@@ -168,18 +168,18 @@ def create_genre_freq_table(genre_frequency):
     cursor = conn.cursor()
     cursor.execute("""CREATE TABLE IF NOT EXISTS genre_table
           (genre TEXT,
-          movies_made INT
+          year TEXT
           );""")
     conn.commit()
     print("Genre table created successfully in PostgreSQL ")
     cursor.execute("""DELETE FROM genre_table""")
-    for item in genre_frequency:
-        genre = item
-        movies_made = int(genre_frequency[item])
+    for item in genre_frequency.itertuples():
+        genre = item.genres
+        year = item.startYear
         cursor.execute("""
             INSERT INTO genre_table
             VALUES (%s, %s);""",
-                       (genre, movies_made))
+                       (genre, year))
     conn.commit()
 
 # load data to movie table
@@ -210,7 +210,7 @@ def load_movie_table():
     ml_df3['averageRating'] = ml_df3['averageRating']*2
 
     print("Movie lens")
-    print(ml_df3.head())
+    # print(ml_df3.head())
 
     # imdb datset
     result = pd.merge(left=movie_dataset, right=rating_dataset,
@@ -219,14 +219,14 @@ def load_movie_table():
     # taking movies only from dataset
     df1 = result[(result["titleType"] == "movie")]
 
-    # deleting useless columns
+    # deleting extra columns
     useless_columns = ["originalTitle", "isAdult", "endYear", "runtimeMinutes"]
     df1.drop(useless_columns, inplace=True, axis=1)
 
     # print(df1)
 
     # taking last 20 years movies only
-    print(df1.dtypes)
+    # print(df1.dtypes)
     df1 = df1[(df1['startYear'] != '\\N')]
     df1 = df1[(df1['genres'] != '\\N')]
     df1['startYear'] = pd.to_numeric(df1['startYear'])
@@ -240,12 +240,17 @@ def load_movie_table():
     # df.replace()
 
     # print(result.head())
-    print(df1)
     # sorted by rating
     df1 = df1.sort_values(by=['averageRating'], ascending=False)
 
+    
     year_df['genres'] = year_df['genres'].apply(lambda x: x.split(","))
     # year_df = year_df.explode('genres')
+
+    genre_year = year_df[year_df.startYear > 2015]
+    genre_year = genre_year[genre_year.startYear < 2021]
+    genre_year = genre_year.explode('genres')
+    # print(year_df.explode('genres'))
     genre_frequency = Counter(
         g for genres in year_df['genres'] for g in genres)
     year_df[["yearStr"]] = year_df[["startYear"]].astype(str)
@@ -255,9 +260,9 @@ def load_movie_table():
     # genre_by_year = year_df.groupby(["startYear"])['genres'].apply(list).reset_index(name = 'genres')
     # genre_by_year = genre_by_year.explode('genres') # it creates so many rows
 
-    print(df1)
-    print(genre_frequency)
-    print(year_frequency)
+    # print(df1)
+    # print(genre_frequency)
+    # print(year_frequency)
     # pd.merge()
 
     # merging two data source
@@ -286,6 +291,7 @@ def load_movie_table():
     # removing useless columns
     df1.drop(['averageRating', 'numVotes', 'averageRating_x', 'numVotes_x',
               'numVotes_y', 'averageRating_y'], inplace=True, axis=1)
+
     # renaming columns
     df1 = df1.rename(columns={'totalVotes': 'numVotes',
                               'totalRating': 'averageRating'})
@@ -295,7 +301,7 @@ def load_movie_table():
     df1 = df1[(df1['numVotes'] > 100000)]
 
     t1 = datetime.now()
-    print(df1)
+    # print(df1)
     print(t1-t2)
 
     # load_rating_table(rating_df)
@@ -331,7 +337,7 @@ def load_movie_table():
     conn.commit()
     cur.close()
     create_year_freq_table(year_frequency)
-    create_genre_freq_table(genre_frequency)
+    create_genre_freq_table(genre_year)
     return has_data
 
 
