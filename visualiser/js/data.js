@@ -19,7 +19,7 @@ function top_chart(data, update){
                     data: data[1],
                     backgroundColor: colors(data[0].length, 0.2),
                     borderColor: colors(data[0].length, 0.7),
-                    borderWidth: 1
+                    borderWidth: 1,
                 }]
             },
             options: {
@@ -279,7 +279,7 @@ function clicked() {
 function colors(num, a) {
     var COLORS = [];
     while (COLORS.length < num) {
-        COLORS.push(`rgba(${rand(0, 255)}, ${rand(0, 255)}, ${rand(0, 255)}, ${a})`);
+        COLORS.push(`rgba(${rand(0, 255)}, ${rand(0, 255)}, ${rand(0, 255)}, 0.5)`);
     }
     return COLORS
 }
