@@ -9,7 +9,6 @@ var fs = require('fs')
 function openPort(app) {
     app.use(express.static(path.join(__dirname, 'js')));
     app.get('/', function (req, res) {
-        console.log("it worked")
         execute()
         res.sendFile(path.join(__dirname + '/index.html'));
     });

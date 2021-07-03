@@ -203,7 +203,7 @@ function genre_chart(data, update){
     var ctx4 = document.getElementById("chart4").getContext('2d');
     if(!update){
         myChart4 = new Chart(ctx4, {
-            type: 'line',
+            type: 'bar',
             data: {
                 labels: data[0],
                 datasets: [{
