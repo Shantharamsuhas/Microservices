@@ -8,4 +8,4 @@ The Visualization use case contains 3 Microservices.
 
 Screenshot of dashboard
 
-![Screenshot](Screenshot.png)
+![Screenshot](Screenshot1.png)
