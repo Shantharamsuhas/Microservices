@@ -247,8 +247,9 @@ def load_movie_table():
     year_df['genres'] = year_df['genres'].apply(lambda x: x.split(","))
     # year_df = year_df.explode('genres')
 
-    genre_year = year_df[year_df.startYear > 2015]
-    genre_year = genre_year[genre_year.startYear < 2021]
+    # limit for genre frequency can be changed here
+    genre_year = year_df[year_df.startYear > 2000]
+    genre_year = genre_year[genre_year.startYear < 2022]
     genre_year = genre_year.explode('genres')
     # print(year_df.explode('genres'))
     genre_frequency = Counter(

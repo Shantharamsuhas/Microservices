@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <!-- <meta http-equiv="Content-Security-Policy" content="default-src 'none'; connect-src 'self';font-src 'self'; img-src 'self' data: https:; style-src 'self' ; script-src 'self'"> -->
     <title>Movie Insights</title>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
     <script type="text/javascript" src="data.js"></script>
@@ -84,38 +85,47 @@
     <br>
     <div id="wrapper1">
         <div id="container" style="width: 40%;margin-left: 100px;">
-            <!-- <label for="cars">Choose a Year: </label>
-            <select name="cars" id="cars">
-                <option value="2000">2000</option>
-                <option value="2001">2001</option>
-                <option value="2002">2002</option>
-                <option value="2003">2003</option>
-            </select> -->
+            <input type="text" id="limit_top" placeholder="No. of Movies" style="width: 100px; border: 0ch;">
+            
             <select name = "year" id = "top_year" onchange="change_data(this.value)">
-                <option value="topall">Alltime</option>
-                <option value="top2020">2020</option>
-                <option value="top2019">2019</option>
-                <option value="top2018">2018</option>
-                <option value="top2017">2017</option>
-                <option value="top2016">2016</option>
+                <option value="alltime">Alltime</option>
+                <option value="2020">2020</option>
+                <option value="2019">2019</option>
+                <option value="2018">2018</option>
+                <option value="2017">2017</option>
+                <option value="2016">2016</option>
             </select>
+
+            <input type="button" value="Show" onclick="get_data(document.getElementById('limit_top').value, document.getElementById('top_year').value, 'top')" />
             <canvas id="chart"></canvas>
         </div>
         <div id="container2" style="width: 40%;margin-left: 100px;">
-            <!-- <label for="cars">Choose a Year: </label>
-            <select name="cars" id="cars">
-                <option value="2000">2000</option>
-                <option value="2001">2001</option>
-                <option value="2002">2002</option>
-                <option value="2003">2003</option>
-            </select> -->
-            <select name = "year" id = "year_range" onchange="change_data(this.value)">
+            <label>Select Range:</label>
+            <label style="color: gray; font-size: x-small;"> From </label>
+            
+            <select name = "from_year" id = "range_upper" onchange="">
+                <option value="2020">2020</option>
+                <option value="2019">2019</option>
+                <option value="2018">2018</option>
+                <option value="2017">2017</option>
+                <option value="2016">2016</option>
+            </select>
+            <label style="color: gray; font-size: x-small;"> - To </label>
+            <select name = "to_year" id = "range_lower" onchange="">
+                <option value="2020">2020</option>
+                <option value="2019">2019</option>
+                <option value="2018">2018</option>
+                <option value="2017">2017</option>
+                <option value="2016">2016</option>
+            </select>
+            <input type="button" value="Show" onclick="get_range_data(document.getElementById('range_upper').value, document.getElementById('range_lower').value)" />
+            <!-- <select name = "year" id = "year_range" onchange="change_data(this.value)">
                 <option value="range2020">2016 - 2020</option>
                 <option value="range2011">2011 - 2015</option>
                 <option value="range2006">2006 - 2010</option>
                 <option value="range2001">2001 - 2005</option>
                 <option value="range1996">1996 - 2000</option>
-            </select>
+            </select> -->
             <canvas id="chart3"></canvas>
         </div>
     </div>
@@ -124,12 +134,14 @@
     <div id="wrapper2">
         <div id="container3" style="width: 40%;margin-left: 100px;" onchange="change_data(this)">
 
-            <select name = "year" id = "genre_year" onchange="change_data(this.value)">
-                <option value="genre2020">2020</option>
-                <option value="genre2019">2019</option>
-                <option value="genre2018">2018</option>
-                <option value="genre2017">2017</option>
-                <option value="genre2016">2016</option>
+            <select name = "year" id = "genre_year" onchange="get_genre_data(this.value)">
+                <option value="2020">2020</option>
+                <option value="2019">2019</option>
+                <option value="2018">2018</option>
+                <option value="2017">2017</option>
+                <option value="2016">2016</option>
+                <option value="2015">2015</option>
+                <option value="2014">2014</option>
             </select>
             <canvas id="chart4"></canvas>
         </div>
@@ -141,14 +153,18 @@
                 <option value="2002">2002</option>
                 <option value="2003">2003</option>
             </select> -->
-            <select name = "years" id = "bottom_year" onchange="change_data(this.value)">
-                <option value="bottomall">Alltime</option>
-                <option value="bottom2020">2020</option>
-                <option value="bottom2019">2019</option>
-                <option value="bottom2018">2018</option>
-                <option value="bottom2017">2017</option>
-                <option value="bottom2016">2016</option>
+            <input type="text" id="limit_bottom" placeholder="No. of Movies" style="width: 100px; border: 0ch;">
+
+            <select name = "years" id = "bottom_year" onchange="">
+                <option value="alltime">Alltime</option>
+                <option value="2020">2020</option>
+                <option value="2019">2019</option>
+                <option value="2018">2018</option>
+                <option value="2017">2017</option>
+                <option value="2016">2016</option>
             </select>
+            <input type="button" value="Show" onclick="get_data(document.getElementById('limit_bottom').value, document.getElementById('bottom_year').value, 'bottom')" />
+
             <canvas id="chart2"></canvas>
         </div>
     </div>
@@ -157,221 +173,6 @@
 
 <script>
     var arr = [top_labels, top_data, bottom_labels, bottom_data, year_labels, year_data, genre_labels, genre_data]
-  
-  
-    // var ctx = document.getElementById("chart").getContext('2d');
-    // var myChart = new Chart(ctx, {
-    //     type: 'bar',
-    //     data: {
-    //         labels: recieved_data[0],
-    //         datasets: [{
-    //             label: '# of Votes',
-    //             data: recieved_data[1],
-    //             backgroundColor: colors(recieved_data[0].length, 0.2),
-    //             borderColor: colors(recieved_data[0].length, 0.7),
-    //             borderWidth: 1
-    //         }]
-    //     },
-    //     options: {
-    //         responsive: true,
-    //         title: {
-    //             display: true,
-    //             text: 'Top something'
-    //         },
-    //         scales: {
-    //             xAxes: [{
-    //                 display: true,
-    //                 scaleLabel: {
-    //                     display: true,
-    //                     labelString: 'Movie'
-    //                 }
-    //             }],
-    //             yAxes: [{
-    //                 display: true,
-    //                 scaleLabel: {
-    //                     display: true,
-    //                     labelString: 'Votes'
-    //                 }
-    //             }]
-    //         }
-    //     }
-    // });
-
-    // // dummy
-    // var myChart = new Chart(ctx, {
-    //     type: 'horizontalBar',
-    //     data: {
-    //         labels: ['The Godfather', 'The Shawshank Redemption', 'Schindler\'s List', 'Raging Bull', 'Casablanca'],
-    //         datasets: [{
-    //             label: '# of Votes',
-    //             data: [1612667, 2332783, 1209020, 320711, 520312],
-    //             backgroundColor: [
-    //                 'rgba(255, 99, 132, 0.2)',
-    //                 'rgba(54, 162, 235, 0.2)',
-    //                 'rgba(255, 206, 86, 0.2)',
-    //                 'rgba(75, 192, 192, 0.2)',
-    //                 'rgba(153, 102, 255, 0.2)',
-    //                 'rgba(255, 159, 64, 0.2)'
-    //             ],
-    //             borderColor: [
-    //                 'rgba(255, 99, 132, 1)',
-    //                 'rgba(54, 162, 235, 1)',
-    //                 'rgba(255, 206, 86, 1)',
-    //                 'rgba(75, 192, 192, 1)',
-    //                 'rgba(153, 102, 255, 1)',
-    //                 'rgba(255, 159, 64, 1)'
-    //             ],
-    //             borderWidth: 1
-    //         }]
-    //     },
-    //     options: {
-    //         responsive: true,
-    //         title: {
-    //             display: true,
-    //             text: 'Top 5 Movies'
-    //         },
-    //         scales: {
-    //             xAxes: [{
-    //                 stacked: true
-    //             }],
-    //             yAxes: [{
-    //                 stacked: true
-    //             }]
-
-    //         }
-    //     }
-    // });
-
-
-    // // dummy 2
-    // pie_data = {
-    //     datasets: [{
-    //         data: [10, 20, 30]
-    //     }],
-
-    //     // These labels appear in the legend and in the tooltips when hovering different arcs
-    //     labels: [
-    //         'Red',
-    //         'Yellow',
-    //         'Blue'
-    //     ]
-    // };
-    // var ctx2 = document.getElementById("chart2").getContext('2d');
-    // var myChart2 = new Chart(ctx2, {
-    //     type: 'line',
-    //     data: {
-    //         labels: ['Comedy', 'Thriller', 'Drama', 'Horror', 'Action'],
-    //         datasets: [{
-    //             label: 'Genres',
-    //             data: [12, 19, 40, 11, 18],
-    //             backgroundColor: [
-    //                 'rgba(255, 99, 132, 0.2)',
-    //                 'rgba(54, 162, 235, 0.2)',
-    //                 'rgba(255, 206, 86, 0.2)',
-    //                 'rgba(75, 192, 192, 0.2)',
-    //                 'rgba(153, 102, 255, 0.2)',
-    //                 'rgba(255, 159, 64, 0.2)'
-    //             ],
-    //             borderColor: [
-    //                 'rgba(255, 99, 132, 1)',
-    //                 'rgba(54, 162, 235, 1)',
-    //                 'rgba(255, 206, 86, 1)',
-    //                 'rgba(75, 192, 192, 1)',
-    //                 'rgba(153, 102, 255, 1)',
-    //                 'rgba(255, 159, 64, 1)'
-    //             ],
-    //             borderWidth: 1
-    //         }]
-    //     },
-    //     options: {
-    //         responsive: true,
-    //         title: {
-    //             display: true,
-    //             text: 'Movies made by genres'
-    //         },
-    //         scales: {
-    //             yAxes: [{
-    //                 ticks: {
-    //                     beginAtZero: true
-    //                 }
-    //             }]
-    //         }
-    //     }
-    // });
-
-    // // dummy 3
-    // var ctx3 = document.getElementById("chart3").getContext('2d');
-    // var myChart3 = new Chart(ctx3, {
-    //     type: 'line',
-    //     data: {
-    //         labels: ['2020', '2019', '2018', '2017', '2016', '2015'],
-    //         datasets: [{
-    //             label: '# of Movies',
-    //             data: [12, 19, 15, 11, 8, 5],
-    //             borderWidth: 1
-    //         }]
-    //     },
-    //     options: {
-    //         responsive: true,
-    //         title: {
-    //             display: true,
-    //             text: 'Movies made by year'
-    //         },
-    //         scales: {
-    //             yAxes: [{
-    //                 ticks: {
-    //                     beginAtZero: true
-    //                 }
-    //             }]
-    //         }
-    //     }
-    // });
-
-
-    // // dummy 2
-    // var ctx4 = document.getElementById("chart4").getContext('2d');
-    // var myChart4 = new Chart(ctx4, {
-    //     type: 'bar',
-    //     data: {
-    //         labels: ['Movie1', 'Movie2', 'Movie3', 'Movie4', 'Movie5'],
-    //         datasets: [{
-    //             label: '# of Votes',
-    //             data: [12, 19, 3, 5, 2, 3],
-    //             backgroundColor: [
-    //                 'rgba(255, 99, 132, 0.2)',
-    //                 'rgba(54, 162, 235, 0.2)',
-    //                 'rgba(255, 206, 86, 0.2)',
-    //                 'rgba(75, 192, 192, 0.2)',
-    //                 'rgba(153, 102, 255, 0.2)',
-    //                 'rgba(255, 159, 64, 0.2)'
-    //             ],
-    //             borderColor: [
-    //                 'rgba(255, 99, 132, 1)',
-    //                 'rgba(54, 162, 235, 1)',
-    //                 'rgba(255, 206, 86, 1)',
-    //                 'rgba(75, 192, 192, 1)',
-    //                 'rgba(153, 102, 255, 1)',
-    //                 'rgba(255, 159, 64, 1)'
-    //             ],
-    //             borderWidth: 1
-    //         }]
-    //     },
-    //     options: {
-    //         responsive: true,
-    //         title: {
-    //             display: true,
-    //             text: 'Worst 5 Movies'
-    //         },
-    //         scales: {
-    //             yAxes: [{
-    //                 ticks: {
-    //                     beginAtZero: true
-    //                 }
-    //             }]
-    //         }
-    //     }
-    // });
-
 
 
     console.log(arr)

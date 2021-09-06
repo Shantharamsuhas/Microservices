@@ -2,6 +2,7 @@ var express = require('express');
 var app = express();
 var path = require('path');
 var fs = require('fs')
+app.use(express.json());
 
 
 
@@ -12,13 +13,103 @@ function openPort(app) {
         execute()
         res.sendFile(path.join(__dirname + '/index.html'));
     });
+
+    app.post('/get_genre_data',async function(req, res) {
+        try {
+            year = req.body.year
+            await client.query("select genre, count(movies_made) from genre_table where movies_made = " + year + " group by movies_made, genre order by count(movies_made) desc limit 5").then
+            (function(result) {
+                console.log(result.rows)
+                res_data = toRows(result.rows, result.rowCount)
+                if (typeof res_data === "undefined")
+                {
+                    res.send({res : "error retriving data"})
+                }else{
+                    if(res_data.length != 0){
+                        res.send({res : "success", labels: res_data[0].join("--"), data: res_data[1]})
+                    }else{
+                        res.send({res : "error retriving data"})
+                    }
+                }
+            })
+        }catch(err) {
+            console.log(err)
+            res.send({res : "error retriving data"})
+        }
+    })
+
+    app.post('/get_range_data', async function(req, res) {
+        try {
+            startYear = req.body.startYear
+            endYear = req.body.endYear
+    
+            await client.query("select * from year_table where year between "  + startYear + " and " + endYear + " order by year desc ").then
+            (function(result) {
+                res_data = toRows(result.rows, result.rowCount)
+                if (typeof res_data === "undefined")
+                {
+                    res.send({res : "error retriving data"})
+                }else{
+                    if(res_data.length != 0){
+                        res.send({res : "success", labels: res_data[0].join("--"), data: res_data[1]})
+    
+                    }else{
+                        res.send({res : "error retriving data"})
+                    }
+                }
+            })
+        }catch(err){
+            console.log(err)
+            res.send({res : "error retriving data"})
+        }
+        
+    })
+    
+    app.post('/get_data', async function (req, res) {
+        try {
+            console.log(req.body.table)
+            // process the request
+            limit = req.body.limit
+            year = req.body.year
+            desc = ""
+            if (req.body.desc) {
+                desc = "desc"
+            }
+            if (year === "alltime")
+            {
+                query = "select primarytitle, averagerating, tconst from movie_table order by averagerating " + desc +  " limit " + limit
+            }else
+            {
+                query = "select primarytitle, averagerating, tconst from movie_table where startyear = '" + year + ".0' order by averagerating " + desc +  " limit " + limit
+            }
+            await client.query(query).then(function (result) {
+                res_data = toRows(result.rows, result.rowCount, true)
+                if (typeof res_data === "undefined")
+                {
+                    res.send({res : "error retriving data"})
+                }else{
+                    if(res_data.length != 0){
+                        res.send({res : "success", labels: res_data[0].join("--"), data: res_data[1], tconst : res_data[2]})
+                    }else{
+                        res.send({res : "error retriving data"})
+                    }
+                }
+            })
+        } catch (err) {
+            console.log(err)
+            res.send({res : "error retriving data"})
+        }
+    })
+    
     app.listen(8080);
 }
-const { Client } = require('pg')
-const client = new Client({
+
+
+const { Pool } = require('pg')
+const client = new Pool({
     user: "admin",
     password: "admin",
-    host: "database",
+    host: "localhost",
     port: 5432,
     database: "dummy"
 })
@@ -38,7 +129,7 @@ execute(app)
 async function execute(app) {
     try {
         openPort(app)
-        await client.connect()
+        // await client.connect()
         
         console.log("Connected successfully")
         console.log(years)
@@ -74,21 +165,21 @@ async function execute(app) {
         }
         // toJS([top_data, bottom_data, year_data, genre_data])
         toJSON(all_data)
-        await client.end()
+        // await client.end()
         console.log("Client disconnected")
     }
     catch (ex) {
         console.log("Error : " + ex)
     }
     finally {
-        client.end()
+        // client.end()
         console.log("client disconnected")
     }
 }
 
 
 // returns am array of integers
-function toRows(data, rowCount) {
+function toRows(data, rowCount, hastconst = false) {
     // console.log("data")
     // console.log(Object.values(data[0])[0])
     var arr1 = new Array()
@@ -102,8 +193,24 @@ function toRows(data, rowCount) {
         arr2.push(parseFloat(Object.values(data[i])[1]))
     }
     arr2 = [].concat.apply([], arr2)
+
+    if (hastconst) {
+        var tconst = new Array()
+        for (let i = 0; i < rowCount; i++) {
+            movie_id = Object.values(data[i])[2]
+            len = 7 - movie_id.toString().length
+            console.log(len)
+            if(len > 0){
+                tconst.push("tt" + "0".repeat(len) + movie_id)
+            }else
+                tconst.push("tt" + movie_id)
+        }
+        tconst = [].concat.apply([], tconst)
+        return [arr1, arr2, tconst]
+    }
     // console.log(arr1)
     // console.log(arr2)
+    // returns labels and data
     return [arr1, arr2]
 
 }

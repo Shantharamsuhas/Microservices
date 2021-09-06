@@ -21,23 +21,6 @@ services:
     ports:
       - "4321:4321"
 
-  cleaner:
-    build: ./cleaner
-    depends_on:
-      - collector
-    command:
-      [
-        "./wait-for-it.sh",
-        "collector:4321",
-        "-t",
-        "0",
-        "--",
-        "python3",
-        "data_cleaner.py",
-      ]
-    networks:
-      - neural
-
   visualiser:
     build: ./visualiser
     depends_on:
