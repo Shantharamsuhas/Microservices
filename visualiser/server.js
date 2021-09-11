@@ -13,6 +13,11 @@ function openPort(app) {
         execute()
         res.sendFile(path.join(__dirname + '/index.html'));
     });
+    
+    app.engine('html', require('ejs').renderFile);
+    app.get('/details_page/:tconst', function(req, res){
+        res.sendFile(path.join(__dirname + '/details_page.html'));
+    })
 
     app.post('/get_genre_data',async function(req, res) {
         try {

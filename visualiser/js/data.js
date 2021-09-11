@@ -51,26 +51,9 @@ function top_chart(data, update){
                 },onClick: function(c,i) {
                     e = i[0];
                     get_details(current_top_data[2][e._index])
-                    // var x_value = this.data.labels[e._index];
-                    // var y_value = this.data.datasets[0].data[e._index];
-                    // console.log(x_value);
-                    // console.log(y_value);
+                    
                 }
-                // onClick: function(c,i) {
-                //     // c is pointer event
-                //     // if (i.length === 0) return
-
-                //     e = c[0];
-                //     console.log(e._datasetIndex)
-                //     var x_value = myChart.data.labels[e._index];
-                //     var y_value = myChart.data.datasets[0].data[e._index];
-                //     console.log(x_value);
-                //     console.log(y_value);
-                // }
-                // onClick: function(evt) {
-                //     var activePoints = myChart.getElementsAtEvent(evt)[0]._datasetIndex.label;
-                //     console.log(activePoints);
-                // }
+                
             }
         
         
@@ -79,25 +62,6 @@ function top_chart(data, update){
     }else{
         myChart.destroy()
         top_chart(data, false)
-        // for (let i = 0; i < data[0].length; i++) {
-        //     //removing old elements
-        //     myChart.data.labels.pop();
-        //     myChart.data.datasets.forEach((dataset) => {
-        //         dataset.data.pop();
-        //     });
-        //     myChart.update();
-        // }
-        // for (let index = 0; index < data[0].length; index++) {
-
-        //     myChart.data.labels.push(data[0][index]);
-        //     myChart.data.datasets.forEach((dataset) => {
-        //         dataset.data.push(data[1][index]);
-        //     });
-        //     myChart.update()
-
-        // }
-
-        
     }
 
 }
@@ -152,24 +116,6 @@ function bottom_chart(data, update){
     }else{
         myChart2.destroy()
         bottom_chart(data, false)
-        // console.log(data)
-        // for (let i = 0; i < data[0].length; i++) {
-        //     //removing old elements
-        //     myChart2.data.labels.pop();
-        //     myChart2.data.datasets.forEach((dataset) => {
-        //         dataset.data.pop();
-        //     });
-        //     myChart2.update();
-        // }
-        // for (let index = 0; index < data[0].length; index++) {
-           
-        //     myChart2.data.labels.push(data[0][index]);
-        //     myChart2.data.datasets.forEach((dataset) => {
-        //         dataset.data.push(data[1][index]);
-        //     });
-        //     myChart2.update()
-
-        // }
     }
 
     
@@ -315,23 +261,19 @@ function genre_chart(data, update){
 
 }
 
-function clicked() {
-    data = getJSON("msg.json")
-    data.then(function (recieved_data)
-    {
-    //    var recieved_data = result
-        // console.log(recieved_data[0]["alltime"])
-
-        get_data(5, "alltime", "top", false)
-        get_data(5, "alltime", "bottom", false)
-        get_genre_data(2020, false)
-        get_range_data(2016, 2020, false)
-        // top_chart([recieved_data[0]["alltime"]["top_labels"].split("--"), recieved_data[0]["alltime"]["top_data"]], false)
-        // bottom_chart([recieved_data[0]["alltime"]["bottom_labels"].split("--"), recieved_data[0]["alltime"]["bottom_data"]], false)
-        // genre_chart([recieved_data[1][2020]["genre_labels"].split("--"), recieved_data[1][2020]["genre_data"]], false)
-        // range_chart([recieved_data[1][2020]["year_labels"].split("--"), recieved_data[1][2020]["year_data"]], false)
-    })
+function on_load() {
+    get_data(5, "alltime", "top", false)
+    get_data(5, "alltime", "bottom", false)
+    get_genre_data(2020, false)
+    get_range_data(2016, 2020, false)
 }
+
+// function to load another page given tconst 
+function load_detailed_page(tconst){
+    tconst = tconst.split("/").at(-1)
+    console.log(tconst)
+}
+
 
 function get_data(limit, year, chart, update = true){
     if(limit < 1 || !limit){
@@ -398,8 +340,9 @@ function get_range_data(startYear, endYear, update = true){
 }
 
 function get_details(tconst){
-    window.open("https://www.imdb.com/title/" + tconst + "/", "_blank")
+    window.location.href = "details_page/"+tconst
 }
+
 
 
 function colors(num, a) {
@@ -420,104 +363,3 @@ function random_rgba() {
 }
 
 var color = random_rgba();
-
-function change_data(year){
-    data = getJSON("msg.json")
-    data.then(function (recieved_data)
-    {
-    // recieved_data = JSON.parse(data)
-    switch(year){
-        case "topall":
-            top_chart([recieved_data[0]["alltime"]["top_labels"].split("--"), recieved_data[0]["alltime"]["top_data"]], true)
-            break;
-
-        case "top2020":
-            top_chart([recieved_data[1][2020]["top_labels"].split("--"), recieved_data[1][2020]["top_data"]], true)
-            break;
-
-        case "top2019":
-            top_chart([recieved_data[2][2019]["top_labels"].split("--"), recieved_data[2][2019]["top_data"]], true)
-            break;
-
-        case "top2018":
-            top_chart([recieved_data[3][2018]["top_labels"].split("--"), recieved_data[3][2018]["top_data"]], true)
-            break;
-
-        case "top2017":
-            top_chart([recieved_data[4][2017]["top_labels"].split("--"), recieved_data[4][2017]["top_data"]], true)
-            break;
-            
-        case "top2016":
-            top_chart([recieved_data[5][2016]["top_labels"].split("--"), recieved_data[5][2016]["top_data"]], true)
-            break;
-
-        case "bottomall":
-            bottom_chart([recieved_data[0]["alltime"]["bottom_labels"].split("--"), recieved_data[0]["alltime"]["bottom_data"]], true)
-            break;
-
-        case "bottom2020":
-            bottom_chart([recieved_data[1][2020]["bottom_labels"].split("--"), recieved_data[1][2020]["bottom_data"]], true)
-            break;
-
-        case "bottom2019":
-            bottom_chart([recieved_data[2][2019]["bottom_labels"].split("--"), recieved_data[2][2019]["bottom_data"]], true)
-            break;
-
-        case "bottom2018":
-            bottom_chart([recieved_data[3][2018]["bottom_labels"].split("--"), recieved_data[3][2018]["bottom_data"]], true)
-            break;
-            
-        case "bottom2017":
-            bottom_chart([recieved_data[4][2017]["bottom_labels"].split("--"), recieved_data[4][2017]["bottom_data"]], true)
-            break;
-            
-        case "bottom2016":
-            bottom_chart([recieved_data[5][2016]["bottom_labels"].split("--"), recieved_data[5][2016]["bottom_data"]], true)
-            break;
-            
-        case "range1996":
-            range_chart([recieved_data[5][2016]["year_labels"].split("--"), recieved_data[0]["alltime"]["year_data"]], true)
-            break;
-
-        case "range2020":
-            range_chart([recieved_data[1][2020]["year_labels"].split("--"), recieved_data[1][2020]["year_data"]], true)
-            break;
-
-        case "range2011":
-            range_chart([recieved_data[2][2019]["year_labels"].split("--"), recieved_data[2][2019]["year_data"]], true)
-            break;
-
-        case "range2006":
-            range_chart([recieved_data[3][2018]["year_labels"].split("--"), recieved_data[3][2018]["year_data"]], true)
-            break;
-            
-        case "range2001":
-            range_chart([recieved_data[4][2017]["year_labels"].split("--"), recieved_data[4][2017]["year_data"]], true)
-            break;
-            
-        case "genre2020":
-            genre_chart([recieved_data[1][2020]["genre_labels"].split("--"), recieved_data[1][2020]["genre_data"]], true)
-            break;
-        
-        case "genre2019":
-            genre_chart([recieved_data[2][2019]["genre_labels"].split("--"), recieved_data[2][2019]["genre_data"]], true)
-            break;
-            
-        case "genre2018":
-            genre_chart([recieved_data[3][2018]["genre_labels"].split("--"), recieved_data[3][2018]["genre_data"]], true)
-            break;
-            
-        case "genre2017":
-            genre_chart([recieved_data[4][2017]["genre_labels"].split("--"), recieved_data[4][2017]["genre_data"]], true)
-            break;
-            
-        case "genre2016":
-            genre_chart([recieved_data[5][2016]["genre_labels"].split("--"), recieved_data[5][2016]["genre_data"]], true)
-            break;    
-    }
-})
-}
-
-function getJSON(path) {
-    return fetch(path).then(response => response.json());
-}
