@@ -12,57 +12,59 @@
 
 </head>
 <style>
-    #wrapper1 {
+    #wrappertop {
         display: flex;
     }
 
-    #container {
+    #top_container {
+        /* width: 220px;
+        height: 210px;   */
         flex: 0.4;
     }
 
-    #container2 {
+    #bottom_container {
         flex: 0.4;
     }
 
-    #wrapper2 {
+    #wrapperbottom {
         display: flex;
-
     }
 
-    #container3 {
+    #range_container {
         flex: 0.4;
         margin-right: 10px;
     }
 
-    #container4 {
+    #genre_container {
         flex: 0.4;
     }
 
-    #chart {
+    #top_chart {
     border: 1px solid rgba(78, 78, 78, 0.096);
+    resize: both;
     width: 220px;
-    height: 170px;
+    height: 150px;
     border-radius: 8px / 8px;
     background-color: rgba(248, 248, 248, 0.966);
     }
-    #chart4 {
+    #genre_chart {
     border: 1px solid rgba(78, 78, 78, 0.096);
     width: 220px;
-    height: 170px;
+    height: 150px;
     border-radius: 8px / 8px;
     background-color: rgba(248, 248, 248, 0.966);
     }
-    #chart2 {
+    #bottom_chart {
     border: 1px solid rgba(78, 78, 78, 0.096);
     width: 220px;
-    height: 170px;
+    height: 150px;
     border-radius: 8px / 8px;
     background-color: rgba(248, 248, 248, 0.966);
     }
-    #chart3 {
+    #range_chart {
     border: 1px solid rgba(78, 78, 78, 0.096);
     width: 220px;
-    height: 170px;
+    height: 150px;
     border-radius: 8px / 8px;
     background-color: rgba(248, 248, 248, 0.966);
     }
@@ -77,14 +79,11 @@
 
 <body style="background-color: rgba(211, 215, 255, 0.884);" onload="on_load()">
     
-    <!-- <h1>Movies Overview</h1>
-        <input id="my" type="button" value="Show Chart" onclick="clicked(arr)" /> -->
-        
     <h1 style=" text-align: center; color: rgb(51, 50, 50); background-color: rgb(96, 96, 248);margin: 0%; padding-top: 5px; padding-bottom: 15px;">Movies Overview</h1>
 
     <br>
-    <div id="wrapper1">
-        <div id="container" style="width: 40%;margin-left: 100px;">
+    <div id="wrappertop">
+        <div id="top_container" style="margin-left: 100px; ">
             <input type="text" id="limit_top" placeholder="No. of Movies" style="width: 100px; border: 0ch;">
             
             <select name = "year" id = "top_year" >
@@ -97,9 +96,9 @@
             </select>
 
             <input type="button" value="Show" onclick="get_data(document.getElementById('limit_top').value, document.getElementById('top_year').value, 'top')" />
-            <canvas id="chart"></canvas>
+            <canvas id="top_chart" height="150" width="220"></canvas>
         </div>
-        <div id="container2" style="width: 40%;margin-left: 100px;">
+        <div id="range_container" style="width: 40%; margin-left: 80px;">
             <label>Select Range:</label>
             <label style="color: gray; font-size: x-small;"> From </label>
             
@@ -119,13 +118,13 @@
                 <option value="2016">2016</option>
             </select>
             <input type="button" value="Show" onclick="get_range_data(document.getElementById('range_upper').value, document.getElementById('range_lower').value)" />
-            <canvas id="chart3"></canvas>
+            <canvas id="range_chart"></canvas>
         </div>
     </div>
     <br>
     <br>
-    <div id="wrapper2">
-        <div id="container3" style="width: 40%;margin-left: 100px;">
+    <div id="wrapperbottom">
+        <div id="genre_container" style="width: 40%;margin-left: 100px;">
 
             <select name = "year" id = "genre_year" onchange="get_genre_data(this.value)">
                 <option value="2020">2020</option>
@@ -136,9 +135,9 @@
                 <option value="2015">2015</option>
                 <option value="2014">2014</option>
             </select>
-            <canvas id="chart4"></canvas>
+            <canvas id="genre_chart"></canvas>
         </div>
-        <div id="container4" style="width: 40%;margin-left: 100px;">
+        <div id="bottom_container" style="width: 40%;margin-left: 100px;">
         
             <input type="text" id="limit_bottom" placeholder="No. of Movies" style="width: 100px; border: 0ch;">
 
@@ -152,9 +151,15 @@
             </select>
             <input type="button" value="Show" onclick="get_data(document.getElementById('limit_bottom').value, document.getElementById('bottom_year').value, 'bottom')" />
 
-            <canvas id="chart2"></canvas>
+            <canvas id="bottom_chart"></canvas>
         </div>
     </div>
+    <!-- <script>
+        var c = document.getElementById("top_chart");
+        alert(c.height + " " + c.width);
+        c.height = 250;
+        alert(c.height + " " + c.width);
+    </script> -->
 
 </body>
 </html>

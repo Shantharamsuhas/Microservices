@@ -13,7 +13,6 @@ services:
 
   collector:
     build: ./collector
-    command: tail -F anything
     depends_on:
       - database
     networks:
@@ -30,7 +29,7 @@ services:
         "./wait-for-it.sh",
         "collector:4321",
         "-t",
-        "0",
+        "10",
         "--",
         "node",
         "server.js",

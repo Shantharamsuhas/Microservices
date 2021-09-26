@@ -1,18 +1,18 @@
 // to show the chart
 
-var myChart
-var myChart1
-var myChart2
-var myChart3
+var my_top_chart
+var my_genre_chart
+var my_bottom_chart
+var my_range_chart
 var current_top_data = []
 var current_bottom_data = []
 
 function top_chart(data, update){
-    var ctx = document.getElementById("chart").getContext('2d');
-    // ctx.clearRect(0, 0, ctx.width, ctx.height);
+    var top_ctx = document.getElementById("top_chart").getContext('2d');
+    // top_ctx.height = get_height(data[0].length);
     if(!update)
     {
-        myChart = new Chart(ctx, {
+        my_top_chart = new Chart(top_ctx, {
             type: 'horizontalBar',
             data: {
                 labels: data[0],
@@ -26,6 +26,7 @@ function top_chart(data, update){
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 legend: {
                     display: false
                 },
@@ -55,22 +56,28 @@ function top_chart(data, update){
                 }
                 
             }
-        
-        
-        
         });
     }else{
-        myChart.destroy()
+        my_top_chart.destroy()
         top_chart(data, false)
     }
-
+    // var can = document.getElementById("top_container");
+    // console.log("top chart ", can.height)
+    // window.addEventListener("resize", function() {
+    //     var new_height = get_height(data[0].length);
+    //     can.height = new_height;
+    //     console.log("new height is ", new_height)
+    // });
+    // can.height = get_height(data[0].length);
+    // console.log("top chart updated", can.height)
+    // document.getElementById("top_chart").height = get_height(data[0].length);
 }
 
-
 function bottom_chart(data, update){
-    var ctx2 = document.getElementById("chart2").getContext('2d');
+    // document.getElementById("bottom_chart").height = get_height(data[0].length);
+    var bottom_ctx = document.getElementById("bottom_chart");
     if(!update){
-        myChart2 = new Chart(ctx2, {
+        my_bottom_chart = new Chart(bottom_ctx.getContext('2d'), {
             type: 'horizontalBar',
             data: {
                 labels: data[0],
@@ -84,6 +91,7 @@ function bottom_chart(data, update){
             },
             options: {
                 responsive: true,
+                maintainAspectRatio: false,
                 legend: {
                     display: false
                 },
@@ -94,6 +102,7 @@ function bottom_chart(data, update){
                 scales: {
                     xAxes: [{
                         display: true,
+                        beginAtzero: true,
                         scaleLabel: {
                             display: true,
                             labelString: 'Rating'
@@ -114,19 +123,26 @@ function bottom_chart(data, update){
         });
 
     }else{
-        myChart2.destroy()
+        my_bottom_chart.destroy()
         bottom_chart(data, false)
     }
-
-    
-
+    // alert("bottom chart ", bottom_ctx.height)
+    var can = document.getElementById("bottom_chart");
+    console.log("bottom chart ", can.height)
+    // window.addEventListener("resize", function() {
+    //     var new_height = get_height(data[0].length);
+    //     can.height = new_height;
+    //     console.log("new height is ", new_height)
+    // });
+    can.height = get_height(data[0].length);
+    console.log("bottom chart updated", can.height)
 }
 
 function range_chart(data, update){
-    var ctx3 = document.getElementById("chart3").getContext('2d');
+    var range_ctx = document.getElementById("range_chart").getContext('2d');
     if(!update){
 
-        myChart3 = new Chart(ctx3, {
+        my_range_chart = new Chart(range_ctx, {
             type: 'line',
             data: {
                 labels: data[0],
@@ -169,35 +185,16 @@ function range_chart(data, update){
             }
         });
     }else{
-
-        myChart3.destroy()
+        my_range_chart.destroy()
         range_chart(data, false)
-
-        // console.log(data)
-        // for (let i = 0; i < data[0].length; i++) {
-        //     //removing old elements
-        //     myChart3.data.labels.pop();
-        //     myChart3.data.datasets.forEach((dataset) => {
-        //         dataset.data.pop();
-        //     });
-        //     myChart3.update();
-        // }
-        // for (let index = 0; index < data[0].length; index++) {
-        //     myChart3.data.labels.push(data[0][index]);
-        //     myChart3.data.datasets.forEach((dataset) => {
-        //         dataset.data.push(data[1][index]);
-        //     });
-        //     myChart3.update()
-
-        // }
     }
 
 }
 
 function genre_chart(data, update){
-    var ctx4 = document.getElementById("chart4").getContext('2d');
+    var genre_ctx = document.getElementById("genre_chart").getContext('2d');
     if(!update){
-        myChart4 = new Chart(ctx4, {
+        my_genre_chart = new Chart(genre_ctx, {
             type: 'bar',
             data: {
                 labels: data[0],
@@ -238,27 +235,10 @@ function genre_chart(data, update){
         });
     }else{
         console.log(data)
-        myChart4.destroy()
+        my_genre_chart.destroy()
         genre_chart(data, false)
-        // for (let i = 0; i < data[0].length; i++) {
-        //     //removing old elements
-        //     myChart4.data.labels.pop();
-        //     myChart4.data.datasets.forEach((dataset) => {
-        //         dataset.data.pop();
-        //     });
-        //     myChart4.update();
-        // }
-        // for (let index = 0; index < data[0].length; index++) {
-           
-        //     myChart4.data.labels.push(data[0][index]);
-        //     myChart4.data.datasets.forEach((dataset) => {
-        //         dataset.data.push(data[1][index]);
-        //     });
-        //     myChart4.update()
-
-        // }
+       
     }
-
 }
 
 function on_load() {
@@ -340,10 +320,18 @@ function get_range_data(startYear, endYear, update = true){
 }
 
 function get_details(tconst){
-    window.location.href = "details_page/"+tconst
+    window.open(`details_page/${tconst}`, '_blank')
 }
 
-
+function get_height(data_points){
+    if(data_points/5 > 2){
+        height = (data_points/5 - 2).toFixed() * 100 + 150;
+        console.log("height is ",height )
+        return height
+    }else
+        console.log("height is not added")
+        return 150;
+}
 
 function colors(num, a) {
     var COLORS = [];
