@@ -29,6 +29,7 @@ jobs:
         run: |
           pip3 install setuptools
           pip3 install pytest
+          pip3 install python-dotenv
           pip3 install -r collector/requirements.txt
           npm config set user 0
           npm config set unsafe-perm true
@@ -63,3 +64,5 @@ jobs:
       - name: History of all contaioners
         run: docker ps -a
         
+      - name: Checking Microservices status
+        run: python3 -m pytest microservice_test.py
