@@ -22,7 +22,7 @@ function openPort(app) {
     app.post('/get_genre_data',async function(req, res) {
         try {
             year = req.body.year
-            await client.query("select genre, count(movies_made) from genre_table where movies_made = " + year + " group by movies_made, genre order by count(movies_made) desc limit 5").then
+            await client.query("select genre, count(year) from genre_table where year = '" + year + "' group by year, genre order by count(year) desc limit 5").then
             (function(result) {
                 console.log(result.rows)
                 res_data = toRows(result.rows, result.rowCount)
