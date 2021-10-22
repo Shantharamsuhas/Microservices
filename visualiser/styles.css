@@ -1,0 +1,92 @@
+#p1 {
+  margin: 25px;
+  color: black;
+  font-size: 25px;
+  padding-top: 35px;
+}
+
+#p2 {
+  color: black(70, 67, 67);
+  font-size: 35px;
+  text-align: center;
+  padding-top: 20px;
+}
+
+textarea[name="plot_form"] {
+  margin: 25px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  resize: none;
+  outline: none;
+}
+
+div {
+  text-align: center;
+}
+
+#p3 {
+  color: black(70, 67, 67);
+  font-size: 20px;
+  text-align: center;
+  /* padding-top: 5px; */
+}
+
+#h1 {
+  margin: 25px;
+  color: black;
+  font-size: 25px;
+  text-align: center;
+}
+
+.fade-in {
+  animation: fadeIn ease 10s;
+  -webkit-animation: fadeIn ease 10s;
+  -moz-animation: fadeIn ease 10s;
+  -o-animation: fadeIn ease 10s;
+  -ms-animation: fadeIn ease 10s;
+}
+@keyframes fadeIn {
+  0% {
+    opacity:0;
+  }
+  100% {
+    opacity:1;
+  }
+}
+
+@-moz-keyframes fadeIn {
+  0% {
+    opacity:0;
+  }
+  100% {
+    opacity:1;
+  }
+}
+
+@-webkit-keyframes fadeIn {
+  0% {
+    opacity:0;
+  }
+  100% {
+    opacity:1;
+  }
+}
+
+@-o-keyframes fadeIn {
+  0% {
+    opacity:0;
+  }
+  100% {
+    opacity:1;
+  }
+}
+
+@-ms-keyframes fadeIn {
+  0% {
+    opacity:0;
+  }
+  100% {
+    opacity:1;
+}
+}

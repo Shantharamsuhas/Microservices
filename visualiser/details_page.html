@@ -5,10 +5,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="title">Document</title>
-    <script type="text/javascript" src="../data.js"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script type="text/javascript" src="js/data.js"></script>
+    <script type="text/javascript" src="scrape_synopsis.js"></script>
+
 </head>
-<body style="background-color: rgba(211, 215, 255, 0.884);" onload="load_detailed_page(location.href)">
-    <h1 style="text-align: center;">
-        Hello World </h1>
+<body style="background-color: rgba(211, 215, 255, 0.884);" onload="fetchTitles()">
+
+    <h1 style=" text-align: center; color: rgb(51, 50, 50); background-color: rgb(96, 96, 248);margin: 0%; padding-top: 5px; padding-bottom: 15px;">Recommendation Engine</h1>
+    <p id="p1"> If you liked {{ Shawshank Redemption }}, you might also like </p>
+    <p id="p2" class="fade-in"> {{ Godfather }},      {{ Goodwill Hunting }},     {{ Dexter }},     {{ Shutter Island }},    {{ The Killing }}</p>
+
+
+    <div>
+        <form action="{{ url_for('submit') }}" method="post">
+            <textarea readonly name="plot_form" cols="70" rows="30"> {{ Synopsis goes here }} ! </textarea>
+            <input type="submit">
+        </form>
+    </div>
+    <p id="p3">Click the "Submit" button to generate predicted movie tags, that give an insight of overall theme of the movie.</p>
+    <br>
+        <h1 id="h1">{{ tags }}</h1>
+    <br>
 </body>
 </html>
