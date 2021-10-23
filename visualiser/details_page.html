@@ -5,11 +5,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="title">Document</title>
-    <link rel="stylesheet" href="styles.css">
-    <script type="text/javascript" src="js/data.js"></script>
-    <script type="text/javascript" src="scrape_synopsis.js"></script>
-
+    <link rel="stylesheet" href="../styles.css">
+    <script type="text/javascript" src="../scrape_synopsis.js"></script>
+    <script type="text/javascript" src="../data.js"></script>
+    
 </head>
+
 <body style="background-color: rgba(211, 215, 255, 0.884);" onload="fetchTitles()">
 
     <h1 style=" text-align: center; color: rgb(51, 50, 50); background-color: rgb(96, 96, 248);margin: 0%; padding-top: 5px; padding-bottom: 15px;">Recommendation Engine</h1>
@@ -19,7 +20,7 @@
 
     <div>
         <form action="{{ url_for('submit') }}" method="post">
-            <textarea readonly name="plot_form" cols="70" rows="30"> {{ Synopsis goes here }} ! </textarea>
+            <textarea readonly name="plot_form" cols="70" rows="30" id="synpsis_text_area"> {{ Synopsis goes here }} ! </textarea>
             <input type="submit">
         </form>
     </div>

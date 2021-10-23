@@ -6,11 +6,14 @@ from pandas import DataFrame as df
 import os
 import psycopg2
 import flask
+from flask_cors import CORS, cross_origin
 from flask import jsonify
 from collections import Counter
 from datetime import datetime
 import zipfile
 app = flask.Flask('__name__')
+cors = CORS(app)
+app.config['CORS_HEADERS'] = 'Content-Type'
 PASSWORD = 'MOVIES'
 processing = False
 

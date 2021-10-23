@@ -10,6 +10,8 @@ var current_bottom_data = []
 function top_chart(data, update){
     var top_ctx = document.getElementById("top_chart").getContext('2d');
     // top_ctx.height = get_height(data[0].length);
+    var min_val = Math.min.apply(Math, data[1].map(i=>Number(i)));
+    var max_val = Math.max.apply(Math, data[1].map(i=>Number(i)));
     if(!update)
     {
         my_top_chart = new Chart(top_ctx, {
@@ -36,10 +38,15 @@ function top_chart(data, update){
                 },
                 scales: {
                     xAxes: [{
+                        ticks: {
+                            min: min_val - 0.5 > 0 ? min_val - 0.5 : 0,
+                            max: max_val + 0.5 < 10 ? max_val + 0.5 : 10,
+                            stepSize:0.5
+                        },
                         display: true,
                         scaleLabel: {
                             display: true,
-                            labelString: 'Votes'
+                            labelString: 'Rating'
                         }
                     }],
                     yAxes: [{
@@ -76,6 +83,8 @@ function top_chart(data, update){
 function bottom_chart(data, update){
     // document.getElementById("bottom_chart").height = get_height(data[0].length);
     var bottom_ctx = document.getElementById("bottom_chart");
+    var min_val = Math.min.apply(Math, data[1].map(i=>Number(i)));
+    var max_val = Math.max.apply(Math, data[1].map(i=>Number(i)));
     if(!update){
         my_bottom_chart = new Chart(bottom_ctx.getContext('2d'), {
             type: 'horizontalBar',
@@ -101,6 +110,11 @@ function bottom_chart(data, update){
                 },
                 scales: {
                     xAxes: [{
+                        ticks: {
+                            min: min_val - 0.5 > 0 ? min_val - 0.5 : 0,
+                            max: max_val + 0.5 < 10 ? max_val + 0.5 : 10,
+                            stepSize:0.5
+                        },
                         display: true,
                         beginAtzero: true,
                         scaleLabel: {

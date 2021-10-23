@@ -7,7 +7,11 @@ var path = require('path');
 var fs = require('fs')
 var fetch = require("cross-fetch");
 app.use(express.json());
-
+app.use(function(req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+    next();
+  });
 
 
 
@@ -109,6 +113,18 @@ function openPort(app) {
         }
     })
 
+    app.post('/get_titles', async function (req, res) {
+        try{
+            tconst = req.body.tconst
+            await fetchTitles(tconst).then( function(the_synopsys) {
+                res.send(JSON.stringify({res : "success", synopsys : the_synopsys}))
+            })
+        } catch (err) {
+            console.log(err)
+            res.send({res : "error retriving data"})
+        }
+    })
+
     app.get('/api/check-status', async function(req, res){
         try {
             res.send({status : "success"})
@@ -135,73 +151,15 @@ const client = new Pool({
 
 
 
-// var top_movies
-// var idresult
-// var label
-// var bar_data
-// var years = [2020,2019,2018,2017,2016]
-// var year_range = ["2016 and 2020", "2011 and 2015", "2006 and 2010", "2001 and 2005", "1996 and 2000"]
-// var all_data = []
+
 loadData().then(() => {
     openPort(app)}).catch(err => {
         console.log(err)
     })
 
-// async function execute(app) {
-//     try {
-    
-
-//         openPort(app)
-//         // await client.connect()
-        
-//         // console.log("Connected successfully")
-//         // console.log(years)
-//         // // to add alltime data
-//         // top_movies = await client.query("select primarytitle, averagerating from movie_table order by averagerating desc limit 5")
-//         // bottom_movies = await client.query("select primarytitle, averagerating from movie_table order by averagerating limit 5")
-//         // by_year = await client.query("select * from year_table order by movies_made desc limit 5")
-//         // by_genre = await client.query("select * from genre_table order by movies_made desc limit 5")
-//         // top_data = toRows(top_movies.rows, top_movies.rowCount)
-//         // bottom_data = toRows(bottom_movies.rows, bottom_movies.rowCount)
-//         // year_data = toRows(by_year.rows, by_year.rowCount)
-//         // genre_data = toRows(by_genre.rows, by_genre.rowCount)
-
-//         // all_data.push({"alltime" : { "top_labels" : top_data[0].join("--"), "top_data" : top_data[1],
-//         // "bottom_labels" : bottom_data[0].join("--"), "bottom_data" : bottom_data[1],
-//         // "year_labels" : year_data[0].reverse().join("--"), "year_data" : year_data[1].reverse(),
-//         // "genre_labels" : genre_data[0].join("--"), "genre_data" : genre_data[1] }})
-        
-//         // for (year in years)
-//         // {
-//         //     top_movies = await client.query("select primarytitle, averagerating from movie_table where startyear = '"+ years[year] + ".0' order by averagerating desc limit 5")
-//         //     bottom_movies = await client.query("select primarytitle, averagerating from movie_table where startyear = '"+ years[year] + ".0' order by averagerating limit 5")
-//         //     by_year = await client.query("select * from year_table where year between "  + year_range[year] + " order by movies_made desc")
-//         //     by_genre = await client.query("select genre, count(movies_made) from genre_table where movies_made = " +years[year]+ " group by movies_made, genre order by count(movies_made) desc limit 5")
-//         //     top_data = toRows(top_movies.rows, top_movies.rowCount)
-//         //     bottom_data = toRows(bottom_movies.rows, bottom_movies.rowCount)
-//         //     year_data = toRows(by_year.rows, by_year.rowCount)
-//         //     genre_data = toRows(by_genre.rows, by_genre.rowCount)
-//         //     all_data.push({ [years[year]] : { "top_labels" : top_data[0].join("--"), "top_data" : top_data[1],
-//         //     "bottom_labels" : bottom_data[0].join("--"), "bottom_data" : bottom_data[1],
-//         //     "year_labels" : year_data[0].reverse().join("--"), "year_data" : year_data[1].reverse(),
-//         //     "genre_labels" : genre_data[0].join("--"), "genre_data" : genre_data[1] }})
-//         // }
-//         // toJSON(all_data)
-//         // // await client.end()
-//         // console.log("Client disconnected")
-//     }
-//     catch (ex) {
-//         console.log("Error : " + ex)
-//     }
-//     // finally {
-//     //     // client.end()
-//     //     // console.log("client disconnected")
-//     // }
-// }
-
 async function loadData() {
     try {
-        const result = await fetch("http://collector:4321/api/load-data/MOVIES").then(response => response.json()).then(data => {
+        const result = await fetch("http://vis_collector:4321/api/load-data/MOVIES").then(response => response.json()).then(data => {
             console.log(data)
             if (data.status === "success") {
                 console.log("data loaded")
@@ -248,59 +206,69 @@ function toRows(data, rowCount, hastconst = false) {
         tconst = [].concat.apply([], tconst)
         return [arr1, arr2, tconst]
     }
-    // console.log(arr1)
-    // console.log(arr2)
-    // returns labels and data
     return [arr1, arr2]
 
 }
 
-
-// function toJSON(data) {
-    
-//     fs.writeFile(__dirname + "/js/msg.json", JSON.stringify(data), function (err) {
-//         if (err) {
-//             console.log(err)
-//         } else {
-//             console.log(" JS file created" + data)
-//         }
-//     })
-// }
 module.exports = toRows;
 
 
 // SCRAPER 
-const fetchTitles = async () => {
-    try {
-    // get current page url
-     let current_page = 'http://localhost:8080/details_page/tt0068646' 
-    //  let current_page = window.location.href
-    // extract tconst id
-     let tconst = current_page.match(/(?<!\w)tt\w+/g);
-     const response = await        
-     axios.get('https://www.imdb.com/title/'+tconst+'/plotsummary?ref_=tt_stry_pl#synopsis');
+// const fetchTitles = async () => {
+//     try {
+//     // get current page url
+//      let current_page = 'http://localhost:8080/details_page/tt0068646' 
+//     //  let current_page = window.location.href
+//     // extract tconst id
+//      let tconst = current_page.match(/(?<!\w)tt\w+/g);
+//      const response = await        
+//      axios.get('https://www.imdb.com/title/'+tconst+'/plotsummary?ref_=tt_stry_pl#synopsis');
        
-        const html = response.data;
+//         const html = response.data;
   
-     const $ = cheerio.load(html);
-    //  console.log(pretty($.html()));
-     const synopsys = [];
+//      const $ = cheerio.load(html);
+//     //  console.log(pretty($.html()));
+//      const synopsys = [];
    
-     $('#plot-synopsis-content').each((_idx, el) => {
-      const title = $(el).text()
-    //   console.log(title)
-      synopsys.push(title)
-     });
+//      $('#plot-synopsis-content').each((_idx, el) => {
+//       const title = $(el).text()
+//     //   console.log(title)
+//       synopsys.push(title)
+//      });
    
-     return synopsys;
-    } catch (error) {
-     throw error;
-    }
-   };
+//      return synopsys;
+//     } catch (error) {
+//      throw error;
+//     }
+//    };
   
     
-   async function call_scraper() {
-    let abc = await fetchTitles();
-    // console.log(abc);
-    return abc
-  }
+//    async function call_scraper() {
+//     let abc = await fetchTitles();
+//     // console.log(abc);
+//     return abc
+//   }
+
+async function fetchTitles(tconst){
+    try {
+        // get current page url
+        // let current_page = 'http://localhost:8080/details_page/tt0068646' 
+        //  let current_page = window.location.href
+        // extract tconst id
+        // let tconst = current_page.match(/(?<!\w)tt\w+/g);
+        const response = await axios.get('https://www.imdb.com/title/'+tconst+'/plotsummary?ref_=tt_stry_pl#synopsis');
+        const html = response.data;
+        const $ = cheerio.load(html);
+        //  console.log(pretty($.html()));
+        const synopsys = [];
+    
+        $('#plot-synopsis-content').each((_idx, el) => {
+        const title = $(el).text()
+        //   console.log(title)
+        synopsys.push(title)
+        });
+        return synopsys[0];
+    }catch (error) {
+        throw error;
+    }
+};

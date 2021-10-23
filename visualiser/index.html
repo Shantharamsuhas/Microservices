@@ -84,7 +84,8 @@
     <br>
     <div id="wrappertop">
         <div id="top_container" style="margin-left: 100px; ">
-            <input type="text" id="limit_top" placeholder="No. of Movies" style="width: 100px; border: 0ch;">
+            <label style="margin-right: 20px; margin-left: 5px;">No. Movies: <span id="top_no_movies"></span></label>
+            
             
             <select name = "year" id = "top_year" >
                 <option value="alltime">Alltime</option>
@@ -94,8 +95,28 @@
                 <option value="2017">2017</option>
                 <option value="2016">2016</option>
             </select>
+            
+            <input type="button" value="Show" onclick="get_data(document.getElementById('top_no_movies_slider').value, document.getElementById('top_year').value, 'top')" />
+            
+            <div id="top_slider">
 
-            <input type="button" value="Show" onclick="get_data(document.getElementById('limit_top').value, document.getElementById('top_year').value, 'top')" />
+                <!-- <input type="text" id="limit_top" placeholder="No. of Movies" style="width: 100px; border: 0ch;"> -->
+                <input type="range" min="1" max="20" value="5" class="slider" id="top_no_movies_slider">
+            </div>
+            <script>
+                var slider = document.getElementById("top_no_movies_slider");
+                var output = document.getElementById("top_no_movies");
+                output.innerHTML = "0" + slider.value;
+                
+                slider.oninput = function() {
+                  if (this.value < 10){
+                    output.innerHTML = "0" + this.value;
+                      
+                  }else{
+                    output.innerHTML = this.value;
+                  }
+                }
+            </script>
             <canvas id="top_chart" height="150" width="220"></canvas>
         </div>
         <div id="range_container" style="width: 40%; margin-left: 80px;">
@@ -125,7 +146,7 @@
     <br>
     <div id="wrapperbottom">
         <div id="genre_container" style="width: 40%;margin-left: 100px;">
-
+            
             <select name = "year" id = "genre_year" onchange="get_genre_data(this.value)">
                 <option value="2020">2020</option>
                 <option value="2019">2019</option>
@@ -138,8 +159,9 @@
             <canvas id="genre_chart"></canvas>
         </div>
         <div id="bottom_container" style="width: 40%;margin-left: 100px;">
-        
-            <input type="text" id="limit_bottom" placeholder="No. of Movies" style="width: 100px; border: 0ch;">
+            <label style="margin-right: 20px; margin-left: 5px;">No. Movies: <span id="bottom_no_movies"></span></label>
+            
+            <!-- <input type="text" id="limit_bottom" placeholder="No. of Movies" style="width: 100px; border: 0ch;"> -->
 
             <select name = "years" id = "bottom_year" onchange="">
                 <option value="alltime">Alltime</option>
@@ -149,8 +171,25 @@
                 <option value="2017">2017</option>
                 <option value="2016">2016</option>
             </select>
-            <input type="button" value="Show" onclick="get_data(document.getElementById('limit_bottom').value, document.getElementById('bottom_year').value, 'bottom')" />
-
+            <input type="button" value="Show" onclick="get_data(document.getElementById('bottom_no_movies_slider').value, document.getElementById('bottom_year').value, 'bottom')" />
+            
+            <div id="bottom_slider">
+                <input type="range" min="1" max="20" value="5" class="slider" id="bottom_no_movies_slider">
+            </div>
+            <script>
+                var slider_bot = document.getElementById("bottom_no_movies_slider");
+                var output_bot = document.getElementById("bottom_no_movies");
+                output_bot.innerHTML = "0" + slider.value;
+                
+                slider_bot.oninput = function() {
+                  if (this.value < 10){
+                    output_bot.innerHTML = "0" + this.value;
+                      
+                  }else{
+                    output_bot.innerHTML = this.value;
+                  }
+                }
+            </script>
             <canvas id="bottom_chart"></canvas>
         </div>
     </div>
