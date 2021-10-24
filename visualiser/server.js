@@ -116,14 +116,27 @@ function openPort(app) {
     app.post('/get_titles', async function (req, res) {
         try{
             tconst = req.body.tconst
-            await fetchTitles(tconst).then( function(the_synopsys) {
-                res.send(JSON.stringify({res : "success", synopsys : the_synopsys}))
+            await fetchPlotTitle(tconst).then(function(data) {
+                res.send(JSON.stringify({res: "success", title: data['movie_title']['title'], synopsis: data['Plot']['plot']}))
             })
         } catch (err) {
             console.log(err)
-            res.send({res : "error retriving data"})
+            res.send({res : "error retriving title and synopsis"})
         }
     })
+
+    // app.post('/get_movie_title', async function (req, res) {
+    //     try{
+    //         tconst = req.body.tconst
+    //         console.log("tconstant received by api", tconst)
+    //         await fetachMvieTitles(tconst).then(function(movie_title) {
+    //             res.send(JSON.stringify({res : "success", movietitle : movie_title}))
+    //         })
+    //     } catch (err) {
+    //         console.log(err)
+    //         res.send({res : "error retriving movie title"})
+    //     }
+    // })
 
     app.get('/api/check-status', async function(req, res){
         try {
@@ -249,26 +262,84 @@ module.exports = toRows;
 //     return abc
 //   }
 
-async function fetchTitles(tconst){
+// async function fetchTitles(tconst){
+//     try {
+//         // get current page url
+//         // let current_page = 'http://localhost:8080/details_page/tt0068646' 
+//         //  let current_page = window.location.href
+//         // extract tconst id
+//         // let tconst = current_page.match(/(?<!\w)tt\w+/g);
+//         const response = await axios.get('https://www.imdb.com/title/'+tconst+'/plotsummary?ref_=tt_stry_pl#synopsis');
+//         const html = response.data;
+//         const $ = cheerio.load(html);
+//         //  console.log(pretty($.html()));
+//         const synopsys = [];
+    
+//         $('#plot-synopsis-content').each((_idx, el) => {
+//         const title = $(el).text()
+//         //   console.log(title)
+//         synopsys.push(title)
+//         });
+//         return synopsys[0];
+//     }catch (error) {
+//         throw error;
+//     }
+// };
+
+async function fetchPlotTitle(tconst){
     try {
         // get current page url
         // let current_page = 'http://localhost:8080/details_page/tt0068646' 
         //  let current_page = window.location.href
         // extract tconst id
         // let tconst = current_page.match(/(?<!\w)tt\w+/g);
-        const response = await axios.get('https://www.imdb.com/title/'+tconst+'/plotsummary?ref_=tt_stry_pl#synopsis');
+        var data = new Array();
+        const response = await axios.get('https://www.imdb.com/title/'+tconst +'/plotsummary?ref_=tt_stry_pl#synopsis');
         const html = response.data;
         const $ = cheerio.load(html);
-        //  console.log(pretty($.html()));
-        const synopsys = [];
-    
-        $('#plot-synopsis-content').each((_idx, el) => {
-        const title = $(el).text()
-        //   console.log(title)
-        synopsys.push(title)
+        const synopsis = [];
+        const title = [];
+        $('h3 a').each((_idx, el) => {
+        var movie_title = $(el).text();
+        console.log(movie_title)
+        title.push({"title": movie_title});
+        data['movie_title'] = title[0]
         });
-        return synopsys[0];
+        $('#plot-synopsis-content').each((_idx, el) => {
+        var plot = $(el).text();
+        console.log(plot)
+        synopsis.push({"plot": plot});
+        data['Plot'] = synopsis[0]
+        });
+        return data
     }catch (error) {
         throw error;
     }
 };
+
+
+
+// async function fetachMvieTitles(tconst){
+//     try {
+//         // get current page url
+//         // let current_page = 'http://localhost:8080/details_page/tt0068646' 
+//         //  let current_page = window.location.href
+//         // extract tconst id
+//         // let tconst = current_page.match(/(?<!\w)tt\w+/g);
+//         const response = await axios.get('https://www.imdb.com/title/'+tconst);
+//         console.log(response)
+//         const html = response.data;
+//         const $ = cheerio.load(html);
+//         console.log(pretty($.html()));
+//         const movietitle = [];
+//         $('h1').each((_idx, el) => {
+//         const title = $(el).text()
+//         console.log(title)
+//         movietitle.push(title)
+//         console.log(movietitle)
+//         });
+//         return movietitle[0];
+//     }catch (error) {
+//         throw error;
+//     }
+// };
