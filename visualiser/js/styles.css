@@ -12,13 +12,31 @@
   padding-top: 20px;
 }
 
+input {
+background-color: white;
+opacity: 0.5;
+border: 3px solid #7E0F41;
+border-radius: 10px;
+color: black;
+padding: 15px 30px;
+text-decoration: none;
+margin: 8px 2px;
+cursor: pointer;
+}
+
 textarea[name="plot_form"] {
   margin: 25px;
   display: block;
   margin-left: auto;
   margin-right: auto;
   resize: none;
-  outline: none;
+  /* background: transparent; */
+  overflow-y: scroll;
+  box-sizing: border-box;
+  border: 3px solid #7E0F41;
+  border-radius: 5px;
+  background-color: #f8f8f8;
+  opacity: 0.5;
 }
 
 div {

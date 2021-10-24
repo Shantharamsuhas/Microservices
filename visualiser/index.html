@@ -45,28 +45,28 @@
     width: 220px;
     height: 150px;
     border-radius: 8px / 8px;
-    background-color: rgba(248, 248, 248, 0.966);
+    background-color: rgba(248, 248, 248, 0.7);
     }
     #genre_chart {
     border: 1px solid rgba(78, 78, 78, 0.096);
     width: 220px;
     height: 150px;
     border-radius: 8px / 8px;
-    background-color: rgba(248, 248, 248, 0.966);
+    background-color: rgba(248, 248, 248, 0.7);
     }
     #bottom_chart {
     border: 1px solid rgba(78, 78, 78, 0.096);
     width: 220px;
     height: 150px;
     border-radius: 8px / 8px;
-    background-color: rgba(248, 248, 248, 0.966);
+    background-color: rgba(248, 248, 248, 0.7);
     }
     #range_chart {
     border: 1px solid rgba(78, 78, 78, 0.096);
     width: 220px;
     height: 150px;
     border-radius: 8px / 8px;
-    background-color: rgba(248, 248, 248, 0.966);
+    background-color: rgba(248, 248, 248, 0.7);
     }
     select{
         margin: 5px;    
@@ -74,21 +74,23 @@
         border-radius: 4px/4px;
         border-color: antiquewhite;
     }
-    
+
+    body {
+        background: #20002c;  /* fallback for old browsers */
+        background: -webkit-linear-gradient(to right, #cbb4d4, #20002c);  /* Chrome 10-25, Safari 5.1-6 */
+        background: linear-gradient(to right, #cbb4d4, #20002c); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+    }
 </style>
 
-<body style="background-color: rgba(211, 215, 255, 0.884);" onload="on_load()">
+<body onload="on_load()">
     
-    <h1 style=" text-align: center; color: rgb(51, 50, 50); background-color: rgb(96, 96, 248);margin: 0%; padding-top: 5px; padding-bottom: 15px;">Movies Overview</h1>
-
+    <h1 style=" text-align: center; font-family: Georgia; color: white; text-shadow: 3px 3px purple;background-color: rgba(255, 255, 255, 0.3);margin: 0%; padding-top: 5px; padding-bottom: 15px;">Movies Overview</h1>
     <br>
     <div id="wrappertop">
-        <div id="top_container" style="margin-left: 100px; ">
-            <label style="margin-right: 20px; margin-left: 5px;">No. Movies: <span id="top_no_movies"></span></label>
-            
-            
+        <div id="top_container" style="margin-left: 100px;">
+            <label style="color: whitesmoke; margin-right: 20px; margin-left: 5px; font-family:Georgia"> No of Movies: <span id="top_no_movies"></span></label>
             <select name = "year" id = "top_year" >
-                <option value="alltime">Alltime</option>
+                <option value="alltime">All time</option>
                 <option value="2020">2020</option>
                 <option value="2019">2019</option>
                 <option value="2018">2018</option>
@@ -120,8 +122,8 @@
             <canvas id="top_chart" height="150" width="220"></canvas>
         </div>
         <div id="range_container" style="width: 40%; margin-left: 80px;">
-            <label>Select Range:</label>
-            <label style="color: gray; font-size: x-small;"> From </label>
+            <!-- <label style="color: whitesmoke;"> Select Range:</label> -->
+            <label style="color: whitesmoke; font-family:Georgia"> From: </label>
             
             <select name = "from_year" id = "range_upper" onchange="">
                 <option value="2020">2020</option>
@@ -130,7 +132,7 @@
                 <option value="2017">2017</option>
                 <option value="2016">2016</option>
             </select>
-            <label style="color: gray; font-size: x-small;"> - To </label>
+            <label style="color: whitesmoke; font-family:Georgia"> To: </label>
             <select name = "to_year" id = "range_lower" onchange="">
                 <option value="2020">2020</option>
                 <option value="2019">2019</option>
@@ -159,12 +161,12 @@
             <canvas id="genre_chart"></canvas>
         </div>
         <div id="bottom_container" style="width: 40%;margin-left: 100px;">
-            <label style="margin-right: 20px; margin-left: 5px;">No. Movies: <span id="bottom_no_movies"></span></label>
+            <label style="color: whitesmoke; margin-right: 20px; margin-left: 5px; font-family:Georgia">No of Movies: <span id="bottom_no_movies"></span></label>
             
             <!-- <input type="text" id="limit_bottom" placeholder="No. of Movies" style="width: 100px; border: 0ch;"> -->
 
             <select name = "years" id = "bottom_year" onchange="">
-                <option value="alltime">Alltime</option>
+                <option value="alltime">All time</option>
                 <option value="2020">2020</option>
                 <option value="2019">2019</option>
                 <option value="2018">2018</option>
@@ -199,6 +201,8 @@
         c.height = 250;
         alert(c.height + " " + c.width);
     </script> -->
+
+
 
 </body>
 </html>

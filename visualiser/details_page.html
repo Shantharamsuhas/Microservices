@@ -5,28 +5,37 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="title">Document</title>
+    <!-- <link rel="stylesheet" href="js/styles.css">
+    <script type="text/javascript" src="js/scrape_synopsis.js"></script>
+    <script type="text/javascript" src="js/data.js"></script>   -->
     <link rel="stylesheet" href="../styles.css">
     <script type="text/javascript" src="../scrape_synopsis.js"></script>
     <script type="text/javascript" src="../data.js"></script>
-    
 </head>
+<style>
 
+body {
+    background: #20002c;  /* fallback for old browsers */
+    background: -webkit-linear-gradient(to right, #cbb4d4, #20002c);  /* Chrome 10-25, Safari 5.1-6 */
+    background: linear-gradient(to right, #cbb4d4, #20002c); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+}
+</style>
 <body style="background-color: rgba(211, 215, 255, 0.884);" onload="fetchTitles()">
 
-    <h1 style=" text-align: center; color: rgb(51, 50, 50); background-color: rgb(96, 96, 248);margin: 0%; padding-top: 5px; padding-bottom: 15px;">Recommendation Engine</h1>
-    <p id="p1"> If you liked {{ Shawshank Redemption }}, you might also like </p>
-    <p id="p2" class="fade-in"> {{ Godfather }},      {{ Goodwill Hunting }},     {{ Dexter }},     {{ Shutter Island }},    {{ The Killing }}</p>
+    <h1 style="text-align: center; font-family: Georgia; color: rgba(255, 255, 255, 0.8); text-shadow: 3px 3px  purple; background-color: rgba(255, 255, 255, 0.3); margin: 0%; padding-top: 5px; padding-bottom: 15px;">Recommendation Engine</h1>
+    <p style="color: whitesmoke; font-family:Georgia" id="p1"> If you liked {{ Shawshank Redemption }}, you might also like </p>
+    <p style="color: whitesmoke; font-family:Georgia" id="p2" class="fade-in"> {{ Godfather }},      {{ Goodwill Hunting }},     {{ Dexter }},     {{ Shutter Island }},    {{ The Killing }}</p>
 
 
     <div>
         <form>
-            <textarea readonly name="plot_form" cols="70" rows="30" id="synpsis_text_area"> {{ Synopsis goes here }} ! </textarea>
-            <input type="button" value="submit" onclick="fetchTags()">
+            <textarea name="plot_form" cols="70" rows="30" id="synpsis_text_area"> </textarea>
+            <input type="button" value="Submit" onclick="fetchTags()">
         </form>
     </div>
-    <p id="p3">Click the "Submit" button to generate predicted movie tags, that give an insight of overall theme of the movie.</p>
+    <p style="color: whitesmoke; font-family:Georgia" id="p3">Click the "Submit" button to generate predicted movie tags, that give an insight of overall theme of the movie.</p>
     <br>
-        <h1 id="h1">{{ tags }}</h1>
+        <h1 style="color: whitesmoke; font-family:Georgia" id="h1">{{ tags }}</h1>
     <br>
 </body>
 </html>
