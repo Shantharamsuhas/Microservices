@@ -19,9 +19,9 @@
 
 
     <div>
-        <form action="{{ url_for('submit') }}" method="post">
+        <form>
             <textarea readonly name="plot_form" cols="70" rows="30" id="synpsis_text_area"> {{ Synopsis goes here }} ! </textarea>
-            <input type="submit">
+            <input type="button" value="submit" onclick="fetchTags()">
         </form>
     </div>
     <p id="p3">Click the "Submit" button to generate predicted movie tags, that give an insight of overall theme of the movie.</p>
