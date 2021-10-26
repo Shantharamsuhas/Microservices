@@ -64,6 +64,15 @@ div {
   -o-animation: fadeIn ease 10s;
   -ms-animation: fadeIn ease 10s;
 }
+
+#show {
+  display: none;
+}
+#loop {
+  list-style-type: none;
+  list-style: none;
+}
+
 @keyframes fadeIn {
   0% {
     opacity:0;

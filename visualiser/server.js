@@ -294,15 +294,17 @@ async function fetchPlotTitle(tconst){
         // extract tconst id
         // let tconst = current_page.match(/(?<!\w)tt\w+/g);
         var data = new Array();
-        const response = await axios.get('https://www.imdb.com/title/'+tconst +'/plotsummary?ref_=tt_stry_pl#synopsis');
+        const response = await axios.get('https://www.imdb.com/title/'+tconst +'/plotsummary?ref_=tt_stry_pl#synopsis', {headers: {
+            locale: 'en'
+        }});
         const html = response.data;
         const $ = cheerio.load(html);
         const synopsis = [];
         const title = [];
         $('h3 a').each((_idx, el) => {
         var movie_title = $(el).text();
-        console.log(movie_title)
         title.push({"title": movie_title});
+        console.log(title)
         data['movie_title'] = title[0]
         });
         $('#plot-synopsis-content').each((_idx, el) => {

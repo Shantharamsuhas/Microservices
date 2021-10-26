@@ -3,7 +3,7 @@ function fetchTitles(){
   movie_id = url.split("/").at(-1)
   data = {tconst : movie_id}
   console.log(movie_id) 
-  // fetchRecommendations(movie_id)
+  fetchRecommendations(movie_id)
   fetch("http://localhost:8080/get_titles", {
       method: "POST",  headers: {'Content-Type': 'application/json'}, 
       body: JSON.stringify(data)
@@ -13,7 +13,7 @@ function fetchTitles(){
       console.log("Request complete! title:", res.title);
       if(res.res == "success"){
       document.getElementById('synpsis_text_area').value = res.synopsis
-      document.getElementById('p1').innerHTML = res.title
+      document.getElementById('p1').innerHTML = "If you liked \" " + res.title + " \" you might also like:" 
       }else{
       document.getElementById('synpsis_text_area').value = "Error recieving synopsis"
       console.log("Error recieving data")
@@ -43,7 +43,13 @@ function fetchRecommendations(tconst){
       console.log("Request complete! response:", res.res, res.movies);
       if(res.res == "success"){
         if(res.movies != "failed"){
-          document.getElementById('p2').innerHTML = res.movies.trim()
+          // document.getElementById('p2').innerHTML = res.movies.trim()
+          process_response(res.movies.trim())
+          
+          $(document).ready(function() {
+              myFunc($("#show"));
+          });
+
         }else{
           document.getElementById('p2').innerHTML = "No recommendations found for this movie"
         }
@@ -54,4 +60,35 @@ function fetchRecommendations(tconst){
       });
   };
 
+function process_response(recommendation) {
+  var list = recommendation.split("),")
+  var display = document.getElementById("loop")
+  display.innerHTML = ""
+  var display2 = document.getElementById("loop")
+  list.forEach(function (item, index) {
+      var entry = document.createElement('li');
+      entry.setAttribute("id", "show")
+      entry.appendChild(document.createTextNode(item+")"));
+      display2.appendChild(entry);
+      console.log(item)
+  });
+}
 
+
+function myFunc(oEle)
+{
+	oEle.fadeOut('slow', function(){
+		if (oEle.next().length)
+		{
+			oEle.next().fadeIn('slow', function(){
+				myFunc(oEle.next());
+			});
+		}
+		else
+		{
+			oEle.siblings(":first").fadeIn('slow', function(){
+				myFunc(oEle.siblings(":first"));
+			});
+		}
+	});
+}

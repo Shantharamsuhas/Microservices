@@ -6,9 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title id="title">Recommendation</title>
     <link rel="icon" href="188264848.jpeg">
-    <!-- <link rel="stylesheet" href="js/styles.css">
-    <script type="text/javascript" src="js/scrape_synopsis.js"></script>
-    <script type="text/javascript" src="js/data.js"></script>   -->
+    <script src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
     <link rel="stylesheet" href="../styles.css">
     <script type="text/javascript" src="../scrape_synopsis.js"></script>
     <script type="text/javascript" src="../data.js"></script>
@@ -24,8 +22,12 @@ body {
 <body style="background-color: rgba(211, 215, 255, 0.884);" onload="fetchTitles()">
 
     <h1 style="text-align: center; font-family: Georgia; color: rgba(255, 255, 255, 0.8); text-shadow: 3px 3px  purple; background-color: rgba(255, 255, 255, 0.3); margin: 0%; padding-top: 5px; padding-bottom: 15px;">Recommendation Engine</h1>
-    <p style="color: whitesmoke; font-family:Georgia" id="p1"> If you liked you might also like </p>
-    <p style="color: whitesmoke; font-family:Georgia" id="p2" class="fade-in"> {{ Godfather }},      {{ Goodwill Hunting }},     {{ Dexter }},     {{ Shutter Island }},    {{ The Killing }}</p>
+    <h3 style="color: whitesmoke; font-family:Georgia" id="p1"> If you liked you might also like </h3>
+    <!-- <p style="color: whitesmoke; font-family:Georgia" id="p2" class="fade-in"> {{ Godfather }},      {{ Goodwill Hunting }},     {{ Dexter }},     {{ Shutter Island }},    {{ The Killing }}</p> -->
+    <div class="text_rotate">
+    <ul style="color: whitesmoke; font-family:Georgia" id="loop">
+    </ul>
+    </div>
 
 
     <div>
