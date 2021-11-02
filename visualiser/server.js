@@ -144,7 +144,7 @@ const { Pool } = require('pg')
 const client = new Pool({
     user: "admin",
     password: "admin",
-    host: "visualiser",
+    host: "database",
     port: 5432,
     database: "dummy"
 })
@@ -181,7 +181,7 @@ async function loadData() {
         // check if there is data already available in database
         console.log("Checking data in database")
         var query = "select count(*) from movie_table"
-        var table_rows = await check_db(query)
+        const table_rows = await check_db(query)
         
         if(table_rows < 5){
             console.log("No data found! \nLoading the data... \nThis will take around 5 minutes...")
