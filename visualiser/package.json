@@ -4,7 +4,7 @@
   "main": "server.js",
   "description": "",
   "scripts": {
-    "test": "jest  --forceExit --detectOpenHandles"
+    "test": "jest --forceExit"
   },
   "repository": {
     "type": "git",
@@ -24,9 +24,10 @@
     "ejs": "^3.1.6",
     "express": "^4.17.1",
     "fs": "0.0.1-security",
-    "jest": "^26.6.3",
+    "jest": "^27.3.1",
     "node-fetch": "^3.0.0",
     "pg": "^8.5.1",
-    "pretty": "^2.0.0"
+    "pretty": "^2.0.0",
+    "underscore": "^1.13.1"
   }
 }

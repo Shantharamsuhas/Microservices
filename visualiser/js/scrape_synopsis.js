@@ -23,20 +23,24 @@ function fetchTitles(){
 
   function fetchTags(){
     data = {data : document.getElementById('synpsis_text_area').value}
-    fetch("http://localhost:3311/get-synopsis", {
-      method: "POST", headers: {'Content-Type': 'application/json'}, 
-      body: JSON.stringify(data)
+    document.getElementById('h1').innerHTML = "Loading Tags..."
+    setTimeout(function() {
+      fetch("http://localhost:3311/get-synopsis", {
+        method: "POST", headers: {'Content-Type': 'application/json'}, 
+        body: JSON.stringify(data)
       }).then(response => response.json()).then(res => {
-      console.log("Requested completed: ", res.res, res.tags);
-      if(res.res == "success"){
-        document.getElementById('h1').innerHTML = res.tags.trim()
-      }
-      else {
-        document.getElementById('h1').innerHTML = "Error recieving data"
-        console.log("Error recieving data")
-      }      
-    });
-  };
+        console.log("Requested completed: ", res.res, res.tags);
+        if(res.res == "success"){
+          document.getElementById('h1').innerHTML = res.tags.trim()
+          console.log(res.tags.trim())
+        }
+        else {
+          document.getElementById('h1').innerHTML = "Error recieving data"
+          console.log("Error recieving data")
+        }      
+      });
+    }, 40);
+    };
 
 function fetchRecommendations(tconst){
   fetch("http://localhost:2211/get-recommendation/id/" + tconst).then(response => response.json()).then(res => {
@@ -51,11 +55,21 @@ function fetchRecommendations(tconst){
           });
 
         }else{
-          document.getElementById('p2').innerHTML = "No recommendations found for this movie"
+          process_response(res.movies.trim())
+          
+          $(document).ready(function() {
+              myFunc($("#show"));
+          });
+          // document.getElementById('p2').innerHTML = "No recommendations found for this movie"
         }
       }else{
-      document.getElementById('p2').innerHTML = "Error recieving data"
-      console.log("Error recieving data")
+        process_response(res.movies.trim())
+          
+          $(document).ready(function() {
+              myFunc($("#show"));
+          });
+      // document.getElementById('p2').innerHTML = "Error recieving data"
+        console.log("Error recieving data")
       }
       });
   };

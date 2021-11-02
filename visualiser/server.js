@@ -125,18 +125,6 @@ function openPort(app) {
         }
     })
 
-    // app.post('/get_movie_title', async function (req, res) {
-    //     try{
-    //         tconst = req.body.tconst
-    //         console.log("tconstant received by api", tconst)
-    //         await fetachMvieTitles(tconst).then(function(movie_title) {
-    //             res.send(JSON.stringify({res : "success", movietitle : movie_title}))
-    //         })
-    //     } catch (err) {
-    //         console.log(err)
-    //         res.send({res : "error retriving movie title"})
-    //     }
-    // })
 
     app.get('/api/check-status', async function(req, res){
         try {
@@ -156,37 +144,107 @@ const { Pool } = require('pg')
 const client = new Pool({
     user: "admin",
     password: "admin",
-    host: "database",
+    host: "visualiser",
     port: 5432,
     database: "dummy"
 })
 
 
+loadData()
 
 
-
-loadData().then(() => {
-    openPort(app)}).catch(err => {
-        console.log(err)
-    })
 
 async function loadData() {
     try {
-        const result = await fetch("http://vis_collector:4321/api/load-data/MOVIES").then(response => response.json()).then(data => {
-            console.log(data)
-            if (data.status === "success") {
-                console.log("data loaded")
-            } else {
-                console.log("data not loaded")
+        // ------------------Integration testing--------------------------
+        // check status of required microservices
+        console.log("---------------------------- INTEGRATION TESTING STARTED --------------------------")
+        const services = { collector : "http://vis_collector:4321/api/check-status",
+                           dashboard : "http://dashboard:5555/api/check-status",
+                           database : "visualiser database"
+                            }
+        const res_services = {}
+        for(const [service, url] of Object.entries(services))
+        {
+            if(service == "database")
+            {
+                res_services[service] = await check_db("select 2 + 2 as count")
+            }else{
+                res_services[service] = await check_status(url)
             }
-        }).catch(err => {   
-            console.log(err)
-        })
-        return result
+            console.log(service + ": " + (res_services[service] ? "PASSED"  : "FAILED") )
+        }
+        const all_passed = Object.values(res_services).every(Boolean)
+        if(!all_passed){
+            return integration_failed()
+        }
+        // check if there is data already available in database
+        console.log("Checking data in database")
+        var query = "select count(*) from movie_table"
+        var table_rows = await check_db(query)
+        
+        if(table_rows < 5){
+            console.log("No data found! \nLoading the data... \nThis will take around 5 minutes...")
+            // if there is no data then, get the data
+            const result = await fetch("http://vis_collector:4321/api/load-data/MOVIES").then(response => response.json()).then(data => {
+                if (data.status === "success") {
+                    console.log("Data loaded successfully")
+                } else {
+                    console.log("Data loading failed")
+                }
+            }).catch(err => {   
+                // console.log(err)
+                console.log("Data loading failed")
+            })
+        }
+        // passing dummy data to see if we have data
+        query = "select primarytitle, averagerating, tconst from movie_table order by averagerating desc limit 5"
+        await client.query(query).then(function (result) {
+            res_data = toRows(result.rows, result.rowCount, true)
+            if(res_data[0].length == 5){
+                return integration_passed()
+            }else{
+                return integration_failed()
+            }
+        }).catch(err =>{
+            // console.log(err)
+            return integration_failed()
+        })   
     }
     catch (ex) {
-        console.log(ex)
+        return integration_failed(ex)
     }
+}
+
+function integration_failed(err = 0){
+    // console.log(err)
+    console.log("Error occured while testing.\n---------------------------- INTEGRATION TESTING ENDED -------------------------- \nStopping the Service.")
+}
+function integration_passed(){
+    console.log("Integration Test Passed.\n ---------------------------- INTEGRATION TESTING ENDED -------------------------- \nStarting the Service.")
+    openPort(app)
+}
+
+async function check_db(query){
+    return client.query(query).then(function (result) {
+        return result.rows[0]['count']
+    }).catch(err => {   
+        return 0
+    })
+}
+
+// to check status of microservices
+async function check_status(url)
+{
+    return fetch(url).then(response => response.json()).then(res => {
+    if(res.status == "success"){ 
+        return true
+    }else{
+        return false
+    }
+    }).catch((error) => {
+        return false
+    })
 }
 
 // returns an array of integers
@@ -210,7 +268,6 @@ function toRows(data, rowCount, hastconst = false) {
         for (let i = 0; i < rowCount; i++) {
             movie_id = Object.values(data[i])[2]
             len = 7 - movie_id.toString().length
-            console.log(len)
             if(len > 0){
                 tconst.push("tt" + "0".repeat(len) + movie_id)
             }else
@@ -223,76 +280,11 @@ function toRows(data, rowCount, hastconst = false) {
 
 }
 
-module.exports = toRows;
 
 
-// SCRAPER 
-// const fetchTitles = async () => {
-//     try {
-//     // get current page url
-//      let current_page = 'http://localhost:8080/details_page/tt0068646' 
-//     //  let current_page = window.location.href
-//     // extract tconst id
-//      let tconst = current_page.match(/(?<!\w)tt\w+/g);
-//      const response = await        
-//      axios.get('https://www.imdb.com/title/'+tconst+'/plotsummary?ref_=tt_stry_pl#synopsis');
-       
-//         const html = response.data;
-  
-//      const $ = cheerio.load(html);
-//     //  console.log(pretty($.html()));
-//      const synopsys = [];
-   
-//      $('#plot-synopsis-content').each((_idx, el) => {
-//       const title = $(el).text()
-//     //   console.log(title)
-//       synopsys.push(title)
-//      });
-   
-//      return synopsys;
-//     } catch (error) {
-//      throw error;
-//     }
-//    };
-  
-    
-//    async function call_scraper() {
-//     let abc = await fetchTitles();
-//     // console.log(abc);
-//     return abc
-//   }
-
-// async function fetchTitles(tconst){
-//     try {
-//         // get current page url
-//         // let current_page = 'http://localhost:8080/details_page/tt0068646' 
-//         //  let current_page = window.location.href
-//         // extract tconst id
-//         // let tconst = current_page.match(/(?<!\w)tt\w+/g);
-//         const response = await axios.get('https://www.imdb.com/title/'+tconst+'/plotsummary?ref_=tt_stry_pl#synopsis');
-//         const html = response.data;
-//         const $ = cheerio.load(html);
-//         //  console.log(pretty($.html()));
-//         const synopsys = [];
-    
-//         $('#plot-synopsis-content').each((_idx, el) => {
-//         const title = $(el).text()
-//         //   console.log(title)
-//         synopsys.push(title)
-//         });
-//         return synopsys[0];
-//     }catch (error) {
-//         throw error;
-//     }
-// };
 
 async function fetchPlotTitle(tconst){
     try {
-        // get current page url
-        // let current_page = 'http://localhost:8080/details_page/tt0068646' 
-        //  let current_page = window.location.href
-        // extract tconst id
-        // let tconst = current_page.match(/(?<!\w)tt\w+/g);
         var data = new Array();
         const response = await axios.get('https://www.imdb.com/title/'+tconst +'/plotsummary?ref_=tt_stry_pl#synopsis', {headers: {
             locale: 'en'
@@ -319,29 +311,5 @@ async function fetchPlotTitle(tconst){
     }
 };
 
-
-
-// async function fetachMvieTitles(tconst){
-//     try {
-//         // get current page url
-//         // let current_page = 'http://localhost:8080/details_page/tt0068646' 
-//         //  let current_page = window.location.href
-//         // extract tconst id
-//         // let tconst = current_page.match(/(?<!\w)tt\w+/g);
-//         const response = await axios.get('https://www.imdb.com/title/'+tconst);
-//         console.log(response)
-//         const html = response.data;
-//         const $ = cheerio.load(html);
-//         console.log(pretty($.html()));
-//         const movietitle = [];
-//         $('h1').each((_idx, el) => {
-//         const title = $(el).text()
-//         console.log(title)
-//         movietitle.push(title)
-//         console.log(movietitle)
-//         });
-//         return movietitle[0];
-//     }catch (error) {
-//         throw error;
-//     }
-// };
+// please keep this to the end of the file
+module.exports = toRows;

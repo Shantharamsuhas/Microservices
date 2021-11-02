@@ -11,6 +11,7 @@ from flask import jsonify
 from collections import Counter
 from datetime import datetime
 import zipfile
+import test_data_collector
 app = flask.Flask('__name__')
 cors = CORS(app)
 app.config['CORS_HEADERS'] = 'Content-Type'
@@ -358,4 +359,9 @@ def check_status():
 
 
 if __name__ == "__main__":
-    app.run(host='0.0.0.0', port=4321, threaded=True)
+    print("======================  RUNNING UNIT TESTS (Collector) ====================== ")
+    if test_data_collector.unit_test():
+        print("======================  UNIT TESTS PASSED (Collector) ====================== ")
+        print("Starting Collector Microservice")
+        app.run(host='0.0.0.0', port=4321, threaded=True)
+    print("======================  UNIT TESTS FAILED (Collector) ====================== ")

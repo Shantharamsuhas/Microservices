@@ -1,5 +1,6 @@
 FROM ubuntu
 ADD data_collector.py /
+ADD test_data_collector.py /
 ADD requirements.txt /
 
 

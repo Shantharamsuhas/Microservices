@@ -91,11 +91,28 @@
             <label style="color: whitesmoke; margin-right: 20px; margin-left: 5px; font-family:Georgia"> No of Movies: <span id="top_no_movies"></span></label>
             <select name = "year" id = "top_year" >
                 <option value="alltime">All time</option>
+                <option value="2021">2021</option>
                 <option value="2020">2020</option>
                 <option value="2019">2019</option>
                 <option value="2018">2018</option>
                 <option value="2017">2017</option>
                 <option value="2016">2016</option>
+                <option value="2015">2015</option>
+                <option value="2014">2014</option>
+                <option value="2013">2013</option>
+                <option value="2012">2012</option>
+                <option value="2011">2011</option>
+                <option value="2010">2010</option>
+                <option value="2009">2009</option>
+                <option value="2008">2008</option>
+                <option value="2007">2007</option>
+                <option value="2006">2006</option>
+                <option value="2005">2005</option>
+                <option value="2004">2004</option>
+                <option value="2003">2003</option>
+                <option value="2002">2002</option>
+                <option value="2001">2001</option>
+                <option value="2000">2000</option>
             </select>
             
             <input type="button" value="Show" onclick="get_data(document.getElementById('top_no_movies_slider').value, document.getElementById('top_year').value, 'top')" />
@@ -112,11 +129,11 @@
                 
                 slider.oninput = function() {
                   if (this.value < 10){
-                    output.innerHTML = "0" + this.value;
-                      
+                    output.innerHTML = "0" + this.value; 
                   }else{
                     output.innerHTML = this.value;
                   }
+                  get_data(document.getElementById('top_no_movies_slider').value, document.getElementById('top_year').value, 'top')
                 }
             </script>
             <canvas id="top_chart" height="150" width="220"></canvas>
@@ -126,19 +143,51 @@
             <label style="color: whitesmoke; font-family:Georgia"> From: </label>
             
             <select name = "from_year" id = "range_upper" onchange="">
+                <option value="2021">2021</option>
                 <option value="2020">2020</option>
                 <option value="2019">2019</option>
                 <option value="2018">2018</option>
                 <option value="2017">2017</option>
                 <option value="2016">2016</option>
+                <option value="2015">2015</option>
+                <option value="2014">2014</option>
+                <option value="2013">2013</option>
+                <option value="2012">2012</option>
+                <option value="2011">2011</option>
+                <option value="2010">2010</option>
+                <option value="2009">2009</option>
+                <option value="2008">2008</option>
+                <option value="2007">2007</option>
+                <option value="2006">2006</option>
+                <option value="2005">2005</option>
+                <option value="2004">2004</option>
+                <option value="2003">2003</option>
+                <option value="2002">2002</option>
+                <option value="2001">2001</option>
             </select>
             <label style="color: whitesmoke; font-family:Georgia"> To: </label>
             <select name = "to_year" id = "range_lower" onchange="">
+                <option value="2021">2021</option>
                 <option value="2020">2020</option>
                 <option value="2019">2019</option>
                 <option value="2018">2018</option>
                 <option value="2017">2017</option>
                 <option value="2016">2016</option>
+                <option value="2015">2015</option>
+                <option value="2014">2014</option>
+                <option value="2013">2013</option>
+                <option value="2012">2012</option>
+                <option value="2011">2011</option>
+                <option value="2010">2010</option>
+                <option value="2009">2009</option>
+                <option value="2008">2008</option>
+                <option value="2007">2007</option>
+                <option value="2006">2006</option>
+                <option value="2005">2005</option>
+                <option value="2004">2004</option>
+                <option value="2003">2003</option>
+                <option value="2002">2002</option>
+                <option value="2001">2001</option>
             </select>
             <input type="button" value="Show" onclick="get_range_data(document.getElementById('range_upper').value, document.getElementById('range_lower').value)" />
             <canvas id="range_chart"></canvas>
@@ -150,6 +199,7 @@
         <div id="genre_container" style="width: 40%;margin-left: 100px;">
             
             <select name = "year" id = "genre_year" onchange="get_genre_data(this.value)">
+                <option value="2021">2021</option>
                 <option value="2020">2020</option>
                 <option value="2019">2019</option>
                 <option value="2018">2018</option>
@@ -157,6 +207,19 @@
                 <option value="2016">2016</option>
                 <option value="2015">2015</option>
                 <option value="2014">2014</option>
+                <option value="2013">2013</option>
+                <option value="2012">2012</option>
+                <option value="2011">2011</option>
+                <option value="2010">2010</option>
+                <option value="2009">2009</option>
+                <option value="2008">2008</option>
+                <option value="2007">2007</option>
+                <option value="2006">2006</option>
+                <option value="2005">2005</option>
+                <option value="2004">2004</option>
+                <option value="2003">2003</option>
+                <option value="2002">2002</option>
+                <option value="2001">2001</option>
             </select>
             <canvas id="genre_chart"></canvas>
         </div>
@@ -167,11 +230,28 @@
 
             <select name = "years" id = "bottom_year" onchange="">
                 <option value="alltime">All time</option>
+                <option value="2021">2021</option>
                 <option value="2020">2020</option>
                 <option value="2019">2019</option>
                 <option value="2018">2018</option>
                 <option value="2017">2017</option>
                 <option value="2016">2016</option>
+                <option value="2015">2015</option>
+                <option value="2014">2014</option>
+                <option value="2013">2013</option>
+                <option value="2012">2012</option>
+                <option value="2011">2011</option>
+                <option value="2010">2010</option>
+                <option value="2009">2009</option>
+                <option value="2008">2008</option>
+                <option value="2007">2007</option>
+                <option value="2006">2006</option>
+                <option value="2005">2005</option>
+                <option value="2004">2004</option>
+                <option value="2003">2003</option>
+                <option value="2002">2002</option>
+                <option value="2001">2001</option>
+                <option value="2000">2000</option>
             </select>
             <input type="button" value="Show" onclick="get_data(document.getElementById('bottom_no_movies_slider').value, document.getElementById('bottom_year').value, 'bottom')" />
             
@@ -184,23 +264,18 @@
                 output_bot.innerHTML = "0" + slider.value;
                 
                 slider_bot.oninput = function() {
-                  if (this.value < 10){
-                    output_bot.innerHTML = "0" + this.value;
-                      
-                  }else{
-                    output_bot.innerHTML = this.value;
-                  }
+                    if (this.value < 10){
+                        output_bot.innerHTML = "0" + this.value;
+                        
+                    }else{
+                        output_bot.innerHTML = this.value;
+                    }
+                    get_data(document.getElementById('bottom_no_movies_slider').value, document.getElementById('bottom_year').value, 'bottom')
                 }
-            </script>
+                </script>
             <canvas id="bottom_chart"></canvas>
         </div>
     </div>
-    <!-- <script>
-        var c = document.getElementById("top_chart");
-        alert(c.height + " " + c.width);
-        c.height = 250;
-        alert(c.height + " " + c.width);
-    </script> -->
 
 
 
