@@ -364,4 +364,5 @@ if __name__ == "__main__":
         print("======================  UNIT TESTS PASSED (Collector) ====================== ")
         print("Starting Collector Microservice")
         app.run(host='0.0.0.0', port=4321, threaded=True)
-    print("======================  UNIT TESTS FAILED (Collector) ====================== ")
+    else:
+        print("======================  UNIT TESTS FAILED (Collector) ====================== ")
