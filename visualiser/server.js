@@ -182,13 +182,14 @@ async function loadData() {
         console.log("Checking data in database")
         var query = "select count(*) from movie_table"
         const table_rows = await check_db(query)
-        
+        var data_found = false
         if(table_rows < 5){
             console.log("No data found! \nLoading the data... \nThis will take around 5 minutes...")
             // if there is no data then, get the data
             const result = await fetch("http://vis_collector:4321/api/load-data/MOVIES").then(response => response.json()).then(data => {
                 if (data.status === "success") {
                     console.log("Data loaded successfully")
+                    data_found = false
                 } else {
                     console.log("Data loading failed")
                 }
@@ -196,13 +197,15 @@ async function loadData() {
                 // console.log(err)
                 console.log("Data loading failed")
             })
+        }else{
+            data_found = true
         }
         // passing dummy data to see if we have data
         query = "select primarytitle, averagerating, tconst from movie_table order by averagerating desc limit 5"
         await client.query(query).then(function (result) {
             res_data = toRows(result.rows, result.rowCount, true)
             if(res_data[0].length == 5){
-                return integration_passed()
+                return integration_passed(data_found)
             }else{
                 return integration_failed()
             }
@@ -220,9 +223,22 @@ function integration_failed(err = 0){
     // console.log(err)
     console.log("Error occured while testing.\n---------------------------- INTEGRATION TESTING ENDED -------------------------- \nStopping the Service.")
 }
-function integration_passed(){
+function integration_passed(data_found){
     console.log("Integration Test Passed.\n ---------------------------- INTEGRATION TESTING ENDED -------------------------- \nStarting the Service.")
     openPort(app)
+    if(data_found){
+        console.log("Data already available... \nUpdating the database")
+        fetch("http://vis_collector:4321/api/load-data/MOVIES").then(response => response.json()).then(data => {
+            if (data.status === "success") {
+                console.log("Data loaded successfully")
+            } else {
+                console.log("Data loading failed")
+            }
+        }).catch(err => {   
+            // console.log(err)
+            console.log("Data loading failed")
+        })
+    }
 }
 
 async function check_db(query){
