@@ -21,7 +21,7 @@ processing = False
 
 def API(Conf):
     print('In API selction')
-    app.run(host='0.0.0.0', port=4321)
+    app.run(host='0.0.0.0', port=1111)
 
 
 # Download rating data from IMDb website
@@ -194,8 +194,7 @@ def load_movie_table():
         "https://datasets.imdbws.com/title.basics.tsv.gz")
     movielens_dataset = movielens_data_download(
         "http://files.grouplens.org/datasets/movielens/ml-latest-small.zip")
-    # with open("data.tsv", encoding='utf8') as file:
-    #     movie_dataset = pd.read_csv(file, sep="/t")
+   
     # merging two dataset
     # t2 = datetime.now()
 
@@ -237,13 +236,11 @@ def load_movie_table():
     movies_df = movies_df.sort_values(by=['averageRating'], ascending=False)
 
     year_df['genres'] = year_df['genres'].apply(lambda x: x.split(","))
-    # year_df = year_df.explode('genres')
 
     # limit for genre frequency can be changed here
     genre_year = year_df[year_df.startYear > 2000]
     genre_year = genre_year[genre_year.startYear < 2022]
     genre_year = genre_year.explode('genres')
-    # print(year_df.explode('genres'))
 
     genre_frequency = Counter(
         g for genres in year_df['genres'] for g in genres)
@@ -251,8 +248,6 @@ def load_movie_table():
     year_df['yearStr'] = year_df['yearStr'].apply(lambda x: x.split(","))
     year_frequency = Counter(
         g for genres in year_df['yearStr'] for g in genres)
-    # genre_by_year = year_df.groupby(["startYear"])['genres'].apply(list).reset_index(name = 'genres')
-    # genre_by_year = genre_by_year.explode('genres') # it creates so many rows
 
 
     # merging two data source
@@ -291,22 +286,16 @@ def load_movie_table():
     movies_df = movies_df[(movies_df['numVotes'] > 100000)]
 
     # t1 = datetime.now()
-    # print(df1)
     # print(t1-t2)
 
-    # load_rating_table(rating_df)
 
-    # print(result.shape)
     cur.execute("""DELETE FROM movie_table""")
     # tt1 = datetime.now()
     for row in movies_df.itertuples():
         tconst = row.tconst
         title_type = row.titleType
         primary_title = row.primaryTitle
-        # original_title = row.originalTitle
         start_year = row.startYear
-        # end_year = row.endYear
-        # genres = row.genres
         average_rating = row.averageRating
         num_votes = row.numVotes
 
@@ -336,7 +325,6 @@ def clean_data(password):
             if password == PASSWORD:
                 print("Data loading process started")
                 create_rating_table()
-                # load_rating_table()
                 create_movie_table()
                 load_movie_table()
                 print("Data loaded successfully")
@@ -363,6 +351,6 @@ if __name__ == "__main__":
     if test_data_collector.unit_test():
         print("======================  UNIT TESTS PASSED (Collector) ====================== ")
         print("Starting Collector Microservice")
-        app.run(host='0.0.0.0', port=4321, threaded=True)
+        app.run(host='0.0.0.0', port=1111, threaded=True)
     else:
         print("======================  UNIT TESTS FAILED (Collector) ====================== ")

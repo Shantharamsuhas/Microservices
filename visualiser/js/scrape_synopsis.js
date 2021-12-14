@@ -1,10 +1,13 @@
 function fetchTitles(){
   var url = window.location.href
-  movie_id = url.split("/").at(-1)
+  movie_id = url.split("/").at(-1).split("##").at(0)
+  movie_title = url.split("/").at(-1).split("##").at(1).replaceAll("%20", " ")
   data = {tconst : movie_id}
-  console.log(movie_id) 
+  document.getElementById("main_title").innerHTML = movie_title
+  document.getElementById("title").innerHTML = movie_title
   fetchRecommendations(movie_id)
-  fetch("http://localhost:8080/get_titles", {
+  for_tag = ""
+  fetch("http://localhost:1311/get_titles", {
       method: "POST",  headers: {'Content-Type': 'application/json'}, 
       body: JSON.stringify(data)
       }).then(response => response.json()).then(res => {
@@ -12,8 +15,10 @@ function fetchTitles(){
       console.log("Request complete! synopsis:", res.synopsis);
       console.log("Request complete! title:", res.title);
       if(res.res == "success"){
-      document.getElementById('synpsis_text_area').value = res.synopsis
-      document.getElementById('p1').innerHTML = "If you liked \" " + res.title + " \" you might also like:" 
+      for_tag = res.synopsis.replaceAll("\"", "\\\"")
+      fetchTags(for_tag)
+      document.getElementById('synpsis_text_area').value = res.synopsis.trim()
+      document.getElementById('p1').innerHTML = "If you liked \" " + movie_title + " \" you might also like:" 
       }else{
       document.getElementById('synpsis_text_area').value = "Error recieving synopsis"
       console.log("Error recieving data")
@@ -21,57 +26,53 @@ function fetchTitles(){
       });
   };
 
-  function fetchTags(){
-    data = {data : document.getElementById('synpsis_text_area').value}
+  function fetchTags(for_tag){
+  
+    data = {data : for_tag}
     document.getElementById('h1').innerHTML = "Loading Tags..."
-    setTimeout(function() {
-      fetch("http://localhost:3311/get-synopsis", {
-        method: "POST", headers: {'Content-Type': 'application/json'}, 
-        body: JSON.stringify(data)
-      }).then(response => response.json()).then(res => {
-        console.log("Requested completed: ", res.res, res.tags);
-        if(res.res == "success"){
-          document.getElementById('h1').innerHTML = res.tags.trim()
-          console.log(res.tags.trim())
-        }
-        else {
-          document.getElementById('h1').innerHTML = "Error recieving data"
-          console.log("Error recieving data")
-        }      
-      });
-    }, 40);
+    if (for_tag.trim().startsWith("It looks like we don't have a Synopsis")){
+      document.getElementById('h1').innerHTML = "No Tags Available"
+    }else{
+      setTimeout(function() {
+        fetch("http://localhost:3311/get-synopsis", {
+          method: "POST", headers: {'Content-Type': 'application/json'}, 
+          body: JSON.stringify(data)
+        }).then(response => response.json()).then(res => {
+          console.log("Requested completed: ", res.res, res.tags);
+          if(res.res == "success"){
+            document.getElementById('h1').innerHTML = res.tags.trim()
+            console.log(res.tags.trim())
+          }
+          else {
+            document.getElementById('h1').innerHTML = "Error recieving data"
+            console.log("Error recieving data")
+          }      
+        }).catch(err => {
+          document.getElementById('h1').style.color = "red"
+          document.getElementById('h1').innerHTML = "Tags Prediction Service is down. Tags cannot be loaded"
+        });
+      }, 40);
+    }
     };
 
 function fetchRecommendations(tconst){
   fetch("http://localhost:2211/get-recommendation/id/" + tconst).then(response => response.json()).then(res => {
       console.log("Request complete! response:", res.res, res.movies);
       if(res.res == "success"){
-        if(res.movies != "failed"){
-          // document.getElementById('p2').innerHTML = res.movies.trim()
+        if(res.movies.split("),").length > 1){
           process_response(res.movies.trim())
-          
-          $(document).ready(function() {
-              myFunc($("#show"));
-          });
-
+          console.log(res.tconst)
         }else{
-          process_response(res.movies.trim())
-          
-          $(document).ready(function() {
-              myFunc($("#show"));
-          });
-          // document.getElementById('p2').innerHTML = "No recommendations found for this movie"
+          document.getElementById("rec_error_txt").innerHTML = "Could not find any recommendations for this Movie"
         }
       }else{
-        process_response(res.movies.trim())
-          
-          $(document).ready(function() {
-              myFunc($("#show"));
-          });
-      // document.getElementById('p2').innerHTML = "Error recieving data"
+        // process_response(res.movies.trim())
         console.log("Error recieving data")
       }
-      });
+      }).catch(err => {
+        console.log(err)
+        document.getElementById("rec_error_txt").innerHTML = "Recommender Service Down. Cannot Load Recommendations"
+      })
   };
 
 function process_response(recommendation) {
@@ -88,21 +89,3 @@ function process_response(recommendation) {
   });
 }
 
-
-function myFunc(oEle)
-{
-	oEle.fadeOut('slow', function(){
-		if (oEle.next().length)
-		{
-			oEle.next().fadeIn('slow', function(){
-				myFunc(oEle.next());
-			});
-		}
-		else
-		{
-			oEle.siblings(":first").fadeIn('slow', function(){
-				myFunc(oEle.siblings(":first"));
-			});
-		}
-	});
-}

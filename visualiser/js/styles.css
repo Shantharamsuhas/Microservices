@@ -65,14 +65,25 @@ div {
   -ms-animation: fadeIn ease 10s;
 }
 
-#show {
-  display: none;
-}
-#loop {
+/* #loop {
   list-style-type: none;
   list-style: none;
+} */
+
+ul {
+  margin: auto;
+  width: 50%;
+  list-style-type: none;
+  padding: 10px;
 }
 
+
+li {
+  text-align: center;
+  padding: 10px;
+  margin: 10px;
+  background-color: #98b1b1;
+}
 @keyframes fadeIn {
   0% {
     opacity:0;

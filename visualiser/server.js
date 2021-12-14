@@ -136,7 +136,7 @@ function openPort(app) {
         }
     })
 
-    app.listen(8080);
+    app.listen(1311);
 }
 
 
@@ -159,7 +159,7 @@ async function loadData() {
         // ------------------Integration testing--------------------------
         // check status of required microservices
         console.log("---------------------------- INTEGRATION TESTING STARTED --------------------------")
-        const services = { collector : "http://vis_collector:4321/api/check-status",
+        const services = { collector : "http://vis_collector:1111/api/check-status",
                            dashboard : "http://dashboard:5555/api/check-status",
                            database : "visualiser database"
                             }
@@ -186,7 +186,7 @@ async function loadData() {
         if(table_rows < 5){
             console.log("No data found! \nLoading the data... \nThis will take around 5 minutes...")
             // if there is no data then, get the data
-            const result = await fetch("http://vis_collector:4321/api/load-data/MOVIES").then(response => response.json()).then(data => {
+            const result = await fetch("http://vis_collector:1111/api/load-data/MOVIES").then(response => response.json()).then(data => {
                 if (data.status === "success") {
                     console.log("Data loaded successfully")
                     data_found = false
@@ -228,15 +228,15 @@ function integration_passed(data_found){
     openPort(app)
     if(data_found){
         console.log("Data already available... \nUpdating the database")
-        fetch("http://vis_collector:4321/api/load-data/MOVIES").then(response => response.json()).then(data => {
+        fetch("http://vis_collector:1111/api/load-data/MOVIES").then(response => response.json()).then(data => {
             if (data.status === "success") {
                 console.log("Data loaded successfully")
             } else {
                 console.log("Data loading failed")
             }
         }).catch(err => {   
-            // console.log(err)
-            console.log("Data loading failed")
+            console.log("Error Occured: ")
+            console.log(err)
         })
     }
 }

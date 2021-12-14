@@ -21,24 +21,23 @@ body {
 </style>
 <body style="background-color: rgba(211, 215, 255, 0.884);" onload="fetchTitles()">
 
-    <h1 style="text-align: center; font-family: Georgia; color: rgba(255, 255, 255, 0.8); text-shadow: 3px 3px  purple; background-color: rgba(255, 255, 255, 0.3); margin: 0%; padding-top: 5px; padding-bottom: 15px;">Recommendation Engine</h1>
+    <h1 style="text-align: center; font-family: Georgia; color: rgba(255, 255, 255, 0.8); text-shadow: 3px 3px  purple; background-color: rgba(255, 255, 255, 0.3); margin: 0%; padding-top: 5px; padding-bottom: 15px;" id="main_title">Recommendation Engine</h1>
+    <h3 style="color: whitesmoke; font-family:Georgia; text-align: center;" >Synopsis:</h3>
+    
+    <div>
+        <form>
+            <textarea name="plot_form" cols="100" rows="30" id="synpsis_text_area"> </textarea>
+            <!-- <input type="button" value="Submit" onclick="fetchTags()"> -->
+        </form>
+        <h1 style="color: whitesmoke; font-family:Georgia" id="h1"> </h1>
+    </div>
     <h3 style="color: whitesmoke; font-family:Georgia" id="p1"> If you liked you might also like </h3>
     <!-- <p style="color: whitesmoke; font-family:Georgia" id="p2" class="fade-in"> {{ Godfather }},      {{ Goodwill Hunting }},     {{ Dexter }},     {{ Shutter Island }},    {{ The Killing }}</p> -->
     <div class="text_rotate">
-    <ul style="color: whitesmoke; font-family:Georgia" id="loop">
-    </ul>
+        <h3 style="color: red; font-family:Georgia; text-align: center;" id=rec_error_txt></h3>
+        <ul style="color: whitesmoke; font-family:Georgia" id="loop">
+        </ul>
     </div>
-
-
-    <div>
-        <form>
-            <textarea name="plot_form" cols="70" rows="30" id="synpsis_text_area"> </textarea>
-            <input type="button" value="Submit" onclick="fetchTags()">
-        </form>
-    </div>
-    <p style="color: whitesmoke; font-family:Georgia" id="p3">Click the "Submit" button to generate predicted movie tags, that give an insight of overall theme of the movie.</p>
-    <br>
-        <h1 style="color: whitesmoke; font-family:Georgia" id="h1"> </h1>
-    <br>
+    
 </body>
 </html>

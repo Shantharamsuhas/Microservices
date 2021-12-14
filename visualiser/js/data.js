@@ -58,7 +58,7 @@ function top_chart(data, update){
                     }]
                 },onClick: function(c,i) {
                     e = i[0];
-                    get_details(current_top_data[2][e._index])
+                    get_details(current_top_data[0][e._index], current_top_data[2][e._index])
                     
                 }
                 
@@ -131,7 +131,7 @@ function bottom_chart(data, update){
                     }]
                 },onClick: function(c,i) {
                     e = i[0];
-                    get_details(current_bottom_data[2][e._index])
+                    get_details(current_bottom_data[0][e._index], current_bottom_data[2][e._index])
                 }
             }
         });
@@ -278,7 +278,7 @@ function get_data(limit, year, chart, update = true){
     if (chart == "bottom"){
         data = {limit : limit, year : year, desc : false}
     }
-    fetch("http://localhost:8080/get_data", {
+    fetch("http://localhost:1311/get_data", {
     method: "POST",headers: {'Content-Type': 'application/json'}, 
     body: JSON.stringify(data)
     }).then(response => response.json()).then(res => {
@@ -300,7 +300,7 @@ function get_data(limit, year, chart, update = true){
 function get_genre_data(year, update = true){
     data = {year : year}
     console.log(data)
-    fetch("http://localhost:8080/get_genre_data", {
+    fetch("http://localhost:1311/get_genre_data", {
     method: "POST",headers: {'Content-Type': 'application/json'}, 
     body: JSON.stringify(data)
     }).then(response => response.json()).then(res => {
@@ -320,7 +320,7 @@ function get_range_data(startYear, endYear, update = true){
         data = {startYear : startYear, endYear : endYear}
     }
     console.log(data)
-    fetch("http://localhost:8080/get_range_data", {
+    fetch("http://localhost:1311/get_range_data", {
     method: "POST",headers: {'Content-Type': 'application/json'}, 
     body: JSON.stringify(data)
     }).then(response => response.json()).then(res => {
@@ -333,8 +333,9 @@ function get_range_data(startYear, endYear, update = true){
     });
 }
 
-function get_details(tconst){
-    window.open(`details_page/${tconst}`, '_blank')
+function get_details(title, tconst){
+    console.log(title)
+    window.open(`details_page/${tconst}##${title}`, '_blank')
 }
 
 function get_height(data_points){
