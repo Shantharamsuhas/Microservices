@@ -34,3 +34,4 @@ jobs:
 #         run: python3 cleaner/test_data_cleaner.py
       - name: Test Python script
         run: python3 test.py
+

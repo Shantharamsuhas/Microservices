@@ -11,9 +11,8 @@ services:
     ports:
       - "5432:5432"
 
-  collector:
+  vis_collector:
     build: ./collector
-    command: tail -F anything
     depends_on:
       - database
     networks:
@@ -21,33 +20,16 @@ services:
     ports:
       - "4321:4321"
 
-  cleaner:
-    build: ./cleaner
-    depends_on:
-      - collector
-    command:
-      [
-        "./wait-for-it.sh",
-        "collector:4321",
-        "-t",
-        "0",
-        "--",
-        "python3",
-        "data_cleaner.py",
-      ]
-    networks:
-      - neural
-
   visualiser:
     build: ./visualiser
     depends_on:
-      - collector
+      - vis_collector
     command:
       [
         "./wait-for-it.sh",
         "collector:4321",
         "-t",
-        "0",
+        "10",
         "--",
         "node",
         "server.js",

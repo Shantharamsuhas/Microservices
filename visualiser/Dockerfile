@@ -1,4 +1,4 @@
-FROM node:12
+FROM node:14
 
 WORKDIR /app
 
@@ -10,9 +10,9 @@ RUN npm install
 
 COPY . .
 
-ENV PORT 8080
+ENV PORT 1311
 
-EXPOSE 8080
+EXPOSE 1311
 
 CMD ["node", "server.js"]
 # RUN chmod +x /wait-for-it.sh

@@ -1,0 +1,130 @@
+#p1 {
+  margin: 25px;
+  color: black;
+  font-size: 25px;
+  padding-top: 35px;
+}
+
+#p2 {
+  color: black(70, 67, 67);
+  font-size: 35px;
+  text-align: center;
+  padding-top: 20px;
+}
+
+input {
+background-color: white;
+opacity: 0.5;
+border: 3px solid #7E0F41;
+border-radius: 10px;
+color: black;
+padding: 15px 30px;
+text-decoration: none;
+margin: 8px 2px;
+cursor: pointer;
+}
+
+textarea[name="plot_form"] {
+  margin: 25px;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+  resize: none;
+  /* background: transparent; */
+  overflow-y: scroll;
+  box-sizing: border-box;
+  border: 3px solid #7E0F41;
+  border-radius: 5px;
+  background-color: #f8f8f8;
+  opacity: 0.5;
+}
+
+div {
+  text-align: center;
+}
+
+#p3 {
+  color: black(70, 67, 67);
+  font-size: 20px;
+  text-align: center;
+  /* padding-top: 5px; */
+}
+
+#h1 {
+  margin: 25px;
+  color: black;
+  font-size: 25px;
+  text-align: center;
+}
+
+.fade-in {
+  animation: fadeIn ease 10s;
+  -webkit-animation: fadeIn ease 10s;
+  -moz-animation: fadeIn ease 10s;
+  -o-animation: fadeIn ease 10s;
+  -ms-animation: fadeIn ease 10s;
+}
+
+/* #loop {
+  list-style-type: none;
+  list-style: none;
+} */
+
+ul {
+  margin: auto;
+  width: 50%;
+  list-style-type: none;
+  padding: 10px;
+}
+
+
+li {
+  text-align: center;
+  padding: 10px;
+  margin: 10px;
+  background-color: #98b1b1;
+}
+@keyframes fadeIn {
+  0% {
+    opacity:0;
+  }
+  100% {
+    opacity:1;
+  }
+}
+
+@-moz-keyframes fadeIn {
+  0% {
+    opacity:0;
+  }
+  100% {
+    opacity:1;
+  }
+}
+
+@-webkit-keyframes fadeIn {
+  0% {
+    opacity:0;
+  }
+  100% {
+    opacity:1;
+  }
+}
+
+@-o-keyframes fadeIn {
+  0% {
+    opacity:0;
+  }
+  100% {
+    opacity:1;
+  }
+}
+
+@-ms-keyframes fadeIn {
+  0% {
+    opacity:0;
+  }
+  100% {
+    opacity:1;
+}
+}

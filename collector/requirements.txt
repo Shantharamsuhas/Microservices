@@ -3,3 +3,5 @@ pandas
 psycopg2-binary
 pytest
 flask
+flask_cors
+requests
